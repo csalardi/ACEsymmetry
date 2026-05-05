@@ -169,3 +169,10 @@ Distribution of the tasks:
 A: xyz file generation
 C: list of symmetry elements generation
 E: User interface and visual considerations (Input/Output)
+
+[05.05.2026] C_contribution:
+Publication of a first version of the generation of the list of symmetry elements on the branch workspace-c.
+The commit contains three documents:
+- a python file with the function collecting the labels of the symmetry elements contained in a point group
+- the source document needed for the generation of the dictionnary (csv file)
+- and a test file
