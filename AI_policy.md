@@ -1,1 +1,3 @@
-D'acc, dois-je écrire en anglais ou en français ? 
+AI statement
+
+The present disclosure testify that no AI tools were used in the realisation of this project.
