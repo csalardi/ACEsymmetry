@@ -1,4 +1,4 @@
-from rdkit import Chem
+from rdkit import Chem#Dependancies
 from rdkit.Chem import AllChem
 
 def Mol_From_SMILES(smiles): #Obtention of the molecules
@@ -9,4 +9,4 @@ def Mol_From_SMILES(smiles): #Obtention of the molecules
         return mol
     
 def Most_Stable_Conformer(mol):
-    
+
