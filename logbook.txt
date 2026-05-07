@@ -176,3 +176,7 @@ The commit contains three documents:
 - a python file with the function collecting the labels of the symmetry elements contained in a point group
 - the source document needed for the generation of the dictionnary (csv file)
 - and a test file
+
+[07.05.2026] A_contribution:
+Publication of a first version of the script generating the xyz file of the molecule's most stable conformer, taking the SMILES as input.
+The commit consists of published as a Python file in workspace-a for now.
