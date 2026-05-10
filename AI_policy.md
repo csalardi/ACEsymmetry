@@ -4,7 +4,7 @@ Il faudra le demander aux assistants.
 
 The utilistation of AI is summarized below./L'utilisation de l'IA est résumée ci-dessous.
 
-#Alexis
+Alexis
 ---------
 In this project, AI was used as a particular assistant, but never for pure code generation. Therefore, all the program corresponding to the conversion of the SMILES to the xyz can be considered as written by the programmist, despite the assistance.
 
