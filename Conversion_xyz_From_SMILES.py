@@ -36,6 +36,7 @@ def Overall_conversion(Smiles:str,filename_1:str, filename_2:str, num_confs:int)
     return Chem.MolToXYZBlock(mol)
 
 print (Overall_conversion("C-C-O","ethanol.SDF" ,"ethanol.xyz", 1000))
+print (Overall_conversion("C(C)(C)(C)(C)(C)","pentavalent.SDF","pentavalent.xyz", 1000))
 
 
 
