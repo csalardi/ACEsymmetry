@@ -2,7 +2,7 @@ from rdkit import Chem
 from rdkit.Chem import AllChem
 from rdkit.Chem.rdchem import Mol
 
-def Mol_From_SMILES(smiles:str):#treatment of SMILES input
+def mol_from_SMILES(smiles:str):#treatment of SMILES input
     mol: Mol = Chem.MolFromSmiles(smiles, sanitize=True)
     if mol == None:
         raise ValueError("Invalid SMILES")
@@ -10,7 +10,7 @@ def Mol_From_SMILES(smiles:str):#treatment of SMILES input
         mol = Chem.AddHs(mol)
         return mol
 
-def Conformer_Selection(mol:Mol, num_confs, filename_1:str):#Generation of conformers and selection of the most stable one
+def conformer_selection(mol:Mol, num_confs, filename_1:str):#Generation of conformers and selection of the most stable one
     conf_ids:list[int] = AllChem.EmbedMultipleConfs(mol, numConfs=num_confs)
     if not conf_ids:
         raise ValueError("No conformers generated")
@@ -26,16 +26,16 @@ def Conformer_Selection(mol:Mol, num_confs, filename_1:str):#Generation of confo
     return most_stable_conformer
   
 
-def Overall_conversion(Smiles:str,filename_1:str, filename_2:str, num_confs:int):
-    mol:Mol=Mol_From_SMILES(Smiles)
-    most_stable_conf:int=Conformer_Selection(mol, num_confs, filename_1)
-    xyz:str = Chem.MolToXYZBlock(mol, confId=most_stable_conf)
+def overall_conversion(Smiles:str,filename_1:str, filename_2:str, num_confs:int):#Obtention of the xyz file of the most stable conformer
+    mol:Mol=mol_from_SMILES(Smiles)
+    most_stable_conformer:int=conformer_selection(mol, num_confs, filename_1)
+    xyz:str = Chem.MolToXYZBlock(mol, confId=most_stable_conformer)
     with open(filename_2, "w") as file:
         file.write(xyz)
-    return Chem.MolToXYZBlock(mol, confId=most_stable_conf)
+    return xyz
 
-print (Overall_conversion("C-C-O","ethanol.SDF" ,"ethanol.xyz", 2000))
-print (Overall_conversion("C(C)(C)(C)(C)(C)","pentavalent.SDF","pentavalent.xyz", 1000))
+print (overall_conversion("C-C-O","ethanol.SDF" ,"ethanol.xyz", 5000))
+print (overall_conversion("C(C)(C)(C)(C)(C)","pentavalent.SDF","pentavalent.xyz", 1000))
 
 
 
