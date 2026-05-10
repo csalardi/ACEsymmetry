@@ -10,7 +10,7 @@ def Mol_From_SMILES(smiles:str):#treatment of SMILES input
         mol = Chem.AddHs(mol)
         return mol
 
-def Conformer_Selection(mol:Mol, num_confs=20):#Generation of conformers and selection of the most stable one
+def Conformer_Selection(mol:Mol, num_confs, filename_1:str):#Generation of conformers and selection of the most stable one
     conf_ids:list[int] = AllChem.EmbedMultipleConfs(mol, numConfs=num_confs)
     if not conf_ids:
         raise ValueError("No conformers generated")
@@ -21,19 +21,21 @@ def Conformer_Selection(mol:Mol, num_confs=20):#Generation of conformers and sel
         energies[conf_id] = ff.CalcEnergy()
     most_stable_conformer:int = min(energies, key=energies.get)
     mol_block:str=Chem.MolToMolBlock(mol,confId=most_stable_conformer)
-    with open(filename, "w") as file:
+    with open(filename_1, "w") as file:
         file.write(mol_block)
     mol:Mol=Chem.MolFromMolBlock(mol_block, removeHs=False)
     return mol
   
 
-def Overall_conversion(Smiles:str, filename:str, num_confs:int):
+def Overall_conversion(Smiles:str,filename_1:str, filename_2:str, num_confs:int):
     mol:Mol=Mol_From_SMILES(Smiles)
-    mol:Mol=Conformer_Selection(mol, num_confs)
+    mol:Mol=Conformer_Selection(mol, num_confs, filename_1)
     xyz:str = Chem.MolToXYZBlock(mol, confId=0)
-    with open(filename, "w") as file:
+    with open(filename_2, "w") as file:
         file.write(xyz)
     return Chem.MolToXYZBlock(mol)
+
+print (Overall_conversion("C-C-O","ethanol.SDF" ,"ethanol.xyz", 1000))
 
 
 
