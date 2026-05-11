@@ -184,3 +184,6 @@ The commit consists of published as a Python file in workspace-a for now.
 [10.05.2026] A_contribution
 Publication of the complete version of the script giving the xyz file from the SMILES in branch workspace-a. Adjustments may be required to insert the script in the projects (the way of taking the SMILES input and the export at the right place the xyz file output).
 Update of the document AI_policy.md in workspace-a branch. The utilisation of AI while composing the script giving the xyz file is explicited.
+
+[11.05.2026] A_contribution
+Publication of a jupyter notebook in workspace-a for deepening the tests on the script giving the xyz file.
