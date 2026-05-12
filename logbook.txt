@@ -187,3 +187,6 @@ Update of the document AI_policy.md in workspace-a branch. The utilisation of AI
 
 [11.05.2026] A_contribution
 Publication of a jupyter notebook in workspace-a for deepening the tests on the script giving the xyz file.
+
+[12.05.2026] A_contribution
+Deepening of the Jupyter notebook: Importation of the dependancies, introduction of the main functions from the conversion program, and first tests.
