@@ -34,5 +34,3 @@ def overall_conversion(Smiles:str,filename_1:str, filename_2:str, num_confs:int)
         file.write(xyz)
     return xyz
 
-print (overall_conversion("C-C-O","ethanol.SDF" ,"ethanol.xyz", 5000))
-print (overall_conversion("C(C)(C)(C)(C)(C)","pentavalent.SDF","pentavalent.xyz", 1000))
