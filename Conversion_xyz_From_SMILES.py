@@ -10,7 +10,7 @@ def mol_from_SMILES(smiles:str):#treatment of SMILES input
         mol = Chem.AddHs(mol)
         return mol
 
-def conformer_selection(mol:Mol, num_confs, filename_1:str):#Generation of conformers and selection of the most stable one
+def conformer_selection(mol:Mol, num_confs:int, filename_1:str):#Generation of conformers and selection of the most stable one
     conf_ids:list[int] = AllChem.EmbedMultipleConfs(mol, numConfs=num_confs)
     if not conf_ids:
         raise ValueError("No conformers generated")
@@ -36,9 +36,3 @@ def overall_conversion(Smiles:str,filename_1:str, filename_2:str, num_confs:int)
 
 print (overall_conversion("C-C-O","ethanol.SDF" ,"ethanol.xyz", 5000))
 print (overall_conversion("C(C)(C)(C)(C)(C)","pentavalent.SDF","pentavalent.xyz", 1000))
-
-
-
-
-
-
