@@ -1,20 +1,19 @@
 from rdkit import Chem
 from rdkit.Chem import AllChem
-from rdkit.Chem.rdchem import Mol
 
-def mol_from_SMILES(smiles:str):#treatment of SMILES input
-    mol: Mol = Chem.MolFromSmiles(smiles, sanitize=True)
+def mol_from_SMILES(smiles):#treatment of SMILES input
+    mol = Chem.MolFromSmiles(smiles, sanitize=True)
     if mol == None:
         return("Invalid SMILES")
     else:
         mol = Chem.AddHs(mol)
         return mol
 
-def conformer_selection(mol:Mol, num_confs:int, filename_1:str):#Generation of conformers and selection of the most stable one
-    conf_ids:list[int] = AllChem.EmbedMultipleConfs(mol, numConfs=num_confs)
+def conformer_selection(mol, num_confs, filename_1):#Generation of conformers and selection of the most stable one
+    conf_ids = AllChem.EmbedMultipleConfs(mol, numConfs=num_confs)
     if not conf_ids:
-        raise ValueError("No conformers generated")
-    energies:dict[int, float] = {}
+        return("No conformers generated")
+    energies = {}
     for conf_id in conf_ids:
         ff = AllChem.UFFGetMoleculeForceField(mol, confId=conf_id)
         ff.Minimize()
@@ -26,14 +25,17 @@ def conformer_selection(mol:Mol, num_confs:int, filename_1:str):#Generation of c
     return most_stable_conformer
   
 
-def overall_conversion(Smiles:str,filename_1:str, filename_2:str, num_confs:int):#Obtention of the xyz file of the most stable conformer
-    mol:Mol=mol_from_SMILES(Smiles)
+def overall_conversion(Smiles,filename_1, filename_2, num_confs):#Obtention of the xyz file of the most stable conformer
+    mol=mol_from_SMILES(Smiles)
     if mol !="Invalid SMILES":
-        most_stable_conformer:int=conformer_selection(mol, num_confs, filename_1)
-        xyz:str = Chem.MolToXYZBlock(mol, confId=most_stable_conformer)
-        with open(filename_2, "w") as file:
-            file.write(xyz)
-        return xyz
+        most_stable_conformer=conformer_selection(mol, num_confs, filename_1)
+        if most_stable_conformer != "No conformers generated":
+            xyz = Chem.MolToXYZBlock(mol, confId=most_stable_conformer)
+            with open(filename_2, "w") as file:
+                file.write(xyz)
+            return xyz
+        else:
+            return "Impossible conformation of conformers"
     else:
         return "Invalid smiles or impossible molecule"
 
