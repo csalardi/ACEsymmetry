@@ -196,3 +196,8 @@ Deepening of the Jupyter notebook: Importation of the dependancies, introduction
 - Merging of the working individual parts to start on their composition
 - Reminder of the project deadlines
 - Planning of the next meeting
+
+[13.05.2026] A_contribution
+Correction of the conversion programm: re-writting of the indications of the types of variables. 
+Addition of the doc strings
+Creation of the test file.
