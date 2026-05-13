@@ -22,6 +22,11 @@ def get_symmetry_set(point_group:str)->set:
 
     :return Symmetry_Elements (set): set containing the symmetry elements labels
     '''
+    if not isinstance(point_group,str):
+        raise TypeError(f"Invalid type {type(point_group)}: 'point_group' should be passed as a string.")
+    if not point_group in Symmetry_Elements.keys():
+        raise ValueError("The entered 'point_group' label isn't recognised.")
+    
     return Symmetry_Elements[point_group]
 
 
