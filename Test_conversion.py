@@ -1,0 +1,11 @@
+import Conversion_xyz_From_SMILES as conv
+print("Testing for ethanol")
+print(conv.overall_conversion("C-C-O", "Ethanol.SDF", "Ethanol.xyz", 10000))
+print("Testing for hydrazine")
+print(conv.overall_conversion("N-N", "Hydrazine.SDF", "Hydrazine.xyz", 10000))
+print("Testing for water")
+print(conv.overall_conversion("O", "Water.SDF", "Water.xyz", 10000))
+print("Testing for cholesterol")
+print(conv.overall_conversion("CC(C)CCCC(C)C1CCC2C3C(CC=C4C3(CCC5C4(CC(CC5)O)C)C)C2(C)C1", "Cholesterol.SDF", "Cholesterol.xyz", 10000))
+print("Testing for pentavalent carbon")
+print(conv.overall_conversion("C(C)(C)(C)(C)C", "Pentavalent.SDF", "Pentavalent.xyz", 5000))
