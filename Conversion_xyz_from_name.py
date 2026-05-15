@@ -4,7 +4,7 @@ from rdkit.Chem.rdchem import Mol
 from typing import Union
 import pubchempy as pcp
 
-def smiles_obtention (molecule_name: str)-> str:
+def smiles_obtention (molecule_name: str)-> Union[str, None]:
     '''
     Gives the smiles of a molecule from one of its 
     common non systematic names.
@@ -16,7 +16,8 @@ def smiles_obtention (molecule_name: str)-> str:
         str: smiles of the molecule
     '''
     for compound in pcp.get_compounds (molecule_name, "name"):
-        return compound.smiles
+        return compound.canonical_smiles
+    return None
 
 
 def mol_from_SMILES(smiles: str)-> Union[Mol, None]:
@@ -93,7 +94,7 @@ def overall_conversion(molecule_name: str, num_confs: int=10000, filename_1: Uni
         
     '''
     smiles: Union[str, None]=smiles_obtention(molecule_name)
-    if smiles!= None:
+    if smiles != None:
         mol: Union[Mol,str]=mol_from_SMILES(smiles)
         if mol !=None:
             if filename_1 != None:
