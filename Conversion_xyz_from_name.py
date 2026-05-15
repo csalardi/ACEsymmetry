@@ -16,7 +16,7 @@ def smiles_obtention (molecule_name: str)-> Union[str, None]:
         str: smiles of the molecule
     '''
     for compound in pcp.get_compounds (molecule_name, "name"):
-        return compound.canonical_smiles
+        return compound.smiles
     return None
 
 
