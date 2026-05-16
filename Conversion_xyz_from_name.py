@@ -52,9 +52,24 @@ def contains_metal(mol: Mol) -> bool:
         bool: False in case of non-detection of a metal
     '''
 
-    metal_atomic_numbers: set = {3, 4, 11, 12, 13, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30,
-    37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 72, 73, 74, 75, 76, 77, 78, 79, 80,
-    31, 49, 50, 81, 82, }
+    metal_atomic_numbers: set = {
+    # s-block metals
+    3, 4, 11, 12, 19, 20, 37, 38, 55, 56,
+
+    # d-block (transition metals)
+    21, 22, 23, 24, 25, 26, 27, 28, 29, 30,
+    39, 40, 41, 42, 43, 44, 45, 46, 47, 48,
+    72, 73, 74, 75, 76, 77, 78, 79, 80,
+    104, 105, 106, 107, 108, 109, 110, 111, 112,
+
+    # p-block metals (post-transition)
+    13, 31, 49, 50, 81, 82, 83,
+
+    # lanthanides
+    57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71,
+
+    # actinides
+    89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103}
 
     for atom in mol.GetAtoms():
         if atom.GetAtomicNum() in metal_atomic_numbers:
