@@ -201,3 +201,9 @@ Deepening of the Jupyter notebook: Importation of the dependancies, introduction
 Correction of the conversion programm: re-writting of the indications of the types of variables. 
 Addition of the doc strings
 Creation of the test file.
+
+[16.05.2026] A_contribution
+Completion of the conversion program: Now it takes the name of the molecule (systematic or not) instead of its smiles, and returns messages according to the success of the production of the files SDF and xyz. it depends on pubchempy library. For now, the program deals only with covalent compounds, and rejects chemicals with metallic centers because their treatment requires more sophisticated tools in computational chemistry, as the effects are mainly electronic (e.g. Jahn Teller distortion, enforced square planar geometry for 4d8 and 5d8 complexes).
+The modifications of the program also include a gain in versatility in the inputs: Now each input (names of the files and number of conformers to generate) have default values if the users enters nothing (None).
+The conversion script was tested for little molecules (H2), monoatomic componds (He) and bigger compounds. In addition, the inputs were changed (number of conformers, file names) for diversecompounds to check the versatility stated before. The tests also exhibiting the difficulty to deal with non-covalent compounds, like cis-platin or ferrocen.
+Everything was published on workspace-a.
