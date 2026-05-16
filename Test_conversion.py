@@ -1,4 +1,8 @@
 import Conversion_xyz_from_name as conv
+import matplotlib.pyplot as plt
+import math
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
 
 print("Testing for hydrogen")
 print(conv.overall_conversion("Dihydrogen",None, "H2.SDF", "H2.xyz"))
@@ -16,3 +20,17 @@ print("Testing for ferrocene")
 print(conv.overall_conversion("Dicyclopentadienyliron", None, None, None))
 print("Testing for cisplatin")
 print(conv.overall_conversion("cis-diamminedichloroplatinum(II)", None, None, None))
+print("testing for uranium hexafluoride")
+print(conv.overall_conversion("Uranium hexafluoride", 25, None, None))
+print("Testing for 1,3,5 heptatriene")
+print(conv.overall_conversion("Hepta-1,3,5-triene", None, None, None))
+print("testing for aspirin")
+print(conv.overall_conversion("Aspirin", None, "ASPIRIN.sdf", None))
+
+
+
+
+
+
+
+    
