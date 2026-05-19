@@ -124,7 +124,7 @@ def overall_conversion(smiles: str, num_confs: Union[None, int], filename_1: Uni
     Gives a message (str) in case of failure of the identification of the molecule.
         
     Args:
-        smiles (str): Name of the studied molecule
+        smiles (str): miles of the studied molecule
         num_confs (int): Number of conformers to generate.
         
         
