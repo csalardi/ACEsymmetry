@@ -8,8 +8,7 @@ readme = "README.md"
 requires-python = ">=3.10"
 license = {file = "LICENSE"}
 description = "Tool for the visualisation of symmetry elements of molecules"
-dependencies = [
-    # "rdkit",
+dependencies = ["rdkit","streamlit","streamlit_ketcher","pointgroup","numpy","matplotlib","pubchempy"
 ]
 authors = [
     {name = "Cyrielle Salardi--Brahy", email = "cyrielle.salardi-brahy@epfl.ch"}

@@ -2,8 +2,10 @@ import streamlit as st
 import streamlit_ketcher as stk
 import pubchempy as pc
 import time
-from Character_tables import get_symmetry_set
+
+from Visual_Display import get_symmetry_set
 from Conversion_xyz_From_SMILES import mol_from_SMILES, conformer_selection, overall_conversion
+
 st.set_page_config(
     page_title="Molecular symetry by ACE",
     page_icon="",
