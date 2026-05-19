@@ -3,7 +3,9 @@
 import csv
 from pathlib import Path
 
-Source_symmetry:Path=Path.cwd()/"projects"/"Project_A-C-E"/"Symmetry_elements_dictionnary.csv"
+Source_symmetry:Path=Path(__file__).parent/"Symmetry_elements_dictionnary.csv"
+#changement de Path.cwd()/"projects"/"Project_A-C-E"/"Symmetry_elements_dictionnary.csv" par 
+# Path(__file__).parent/"Symmetry_elements_dictionnary.csv"
 Symmetry_Elements:dict[str,set]={}
 with Source_symmetry.open("r") as file:
     collection=csv.reader(file, delimiter=";")
