@@ -1,8 +1,8 @@
-AI statement
+AI statement:
 
 Cyrielle
 
-The present disclosure testify that no AI tools were used in the realisation of this project.
+The present disclosure testify that no AI tools were used by my part in the realisation of this project.
 
 
 Alexis

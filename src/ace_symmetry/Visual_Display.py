@@ -34,7 +34,6 @@ def read_xyz_file(xyz_file):
     '''
     ...
     '''
-    with ... open as file:
 
 def get_inversion_centre(xyz_file):
     '''
