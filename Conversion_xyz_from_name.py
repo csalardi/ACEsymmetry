@@ -2,6 +2,23 @@ from rdkit import Chem
 from rdkit.Chem import AllChem
 from rdkit.Chem.rdchem import Mol
 from typing import Union
+import pubchempy as pcp
+
+def smiles_obtention (molecule_name: str)-> Union[str, None]:
+    '''
+    Gives the smiles of a molecule from one of its 
+    common non systematic names.
+
+    Args:
+        molecule_name (str): name of the studied molecule
+    
+    Returns:
+        str: smiles of the molecule
+    '''
+    for compound in pcp.get_compounds (molecule_name, "name"):
+        return compound.smiles
+    return None
+
 
 def mol_from_SMILES(smiles: str)-> Union[Mol, None]:
     '''
@@ -115,7 +132,7 @@ def conformer_selection(mol: Mol, num_confs: Union[int, None], filename_1: str)-
             return most_stable_conformer
   
 
-def overall_conversion(smiles: str, num_confs: Union[None, int], filename_1: Union[str, None]=None, filename_2: Union[str, None]=None )-> str:
+def overall_conversion(molecule_name: str, num_confs: Union[None, int], filename_1: Union[str, None]=None, filename_2: Union[str, None]=None )-> str:
     '''
     Gives the xyz block (str) of the molecules introduced through its smiles. Generate the xyz file
     parallelly, as well as the SDF file.
@@ -124,7 +141,7 @@ def overall_conversion(smiles: str, num_confs: Union[None, int], filename_1: Uni
     Gives a message (str) in case of failure of the identification of the molecule.
         
     Args:
-        smiles (str): miles of the studied molecule
+        molecule_name (str): Name of the studied molecule
         num_confs (int): Number of conformers to generate.
         
         
@@ -142,27 +159,30 @@ def overall_conversion(smiles: str, num_confs: Union[None, int], filename_1: Uni
         coordination complexes
         
     '''
-    mol: Union[Mol, None]=mol_from_SMILES(smiles)
-    if mol == None:
-        return "Invalid smiles or impossible molecule"
+    smiles: Union[None, str]=smiles_obtention(molecule_name)
+    if smiles == None:
+        return "Unidentified molecule"
     else:
-        test_metal: bool=contains_metal(mol)
-        if test_metal == False:
-            if filename_1 == None:
-                most_stable_conformer: Union[int, None]=conformer_selection(mol, num_confs, f"{molecule_name}.SDF")
-            else:
-                most_stable_conformer: Union[int, None]=conformer_selection(mol, num_confs, filename_1)            
-            if most_stable_conformer == None:
-                return "No conformer generated"
-            else:
-                xyz_block=Chem.MolToXYZBlock(mol, confId=most_stable_conformer)
-                if filename_2 == None:
-                    with open(f"{molecule_name}.xyz", "w") as f:
-                        f.write(xyz_block)
-                else:
-                    with open(filename_2, "w") as f:
-                        f.write(xyz_block)
-                return "Files succesfully generated"
+        mol: Union[Mol, None]=mol_from_SMILES(smiles)
+        if mol == None:
+            return "Invalid smiles or impossible molecule"
         else:
-            return "Unsupported type of compound"
-
+            test_metal: bool=contains_metal(mol)
+            if test_metal == False:
+                if filename_1 == None:
+                    most_stable_conformer: Union[int, None]=conformer_selection(mol, num_confs, f"{molecule_name}.SDF")
+                else:
+                    most_stable_conformer: Union[int, None]=conformer_selection(mol, num_confs, filename_1)            
+                if most_stable_conformer == None:
+                    return "No conformer generated"
+                else:
+                    xyz_block=Chem.MolToXYZBlock(mol, confId=most_stable_conformer)
+                    if filename_2 == None:
+                        with open(f"{molecule_name}.xyz", "w") as f:
+                            f.write(xyz_block)
+                    else:
+                        with open(filename_2, "w") as f:
+                            f.write(xyz_block)
+                    return "Files succesfully generated"
+            else:
+                return "Unsupported type of compound"

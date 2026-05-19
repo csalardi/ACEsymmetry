@@ -1,11 +1,36 @@
-import Conversion_xyz_From_SMILES as conv
-print("Testing for ethanol")
-print(conv.overall_conversion("C-C-O", "Ethanol.SDF", "Ethanol.xyz", 10000))
-print("Testing for hydrazine")
-print(conv.overall_conversion("N-N", "Hydrazine.SDF", "Hydrazine.xyz", 10000))
-print("Testing for water")
-print(conv.overall_conversion("O", "Water.SDF", "Water.xyz", 10000))
-print("Testing for cholesterol")
-print(conv.overall_conversion("CC(C)CCCC(C)C1CCC2C3C(CC=C4C3(CCC5C4(CC(CC5)O)C)C)C2(C)C1", "Cholesterol.SDF", "Cholesterol.xyz", 10000))
-print("Testing for pentavalent carbon")
-print(conv.overall_conversion("C(C)(C)(C)(C)C", "Pentavalent.SDF", "Pentavalent.xyz", 5000))
+import Conversion_xyz_from_name as conv
+import matplotlib.pyplot as plt
+import math
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+
+print("Testing for hydrogen")
+print(conv.overall_conversion("Dihydrogen",None, "H2.SDF", "H2.xyz"))
+print("Testing for Helium")
+print(conv.overall_conversion("Helium", None, None, None))
+print("Testing for invalid name")
+print(conv.overall_conversion("fresh_butter", None, None, None))
+print("Testing for benzene")
+print(conv.overall_conversion("Benzene", None, None, None))
+print("testing for propanol")
+print(conv.overall_conversion("Propan-2-ol", None, None, None))
+print("testing for butanol")
+print(conv.overall_conversion("Butan-1-ol", None, "But-1-ol.SDF", "But-1-ol.xyz"))
+print("Testing for ferrocene")
+print(conv.overall_conversion("Dicyclopentadienyliron", None, None, None))
+print("Testing for cisplatin")
+print(conv.overall_conversion("cis-diamminedichloroplatinum(II)", None, None, None))
+print("testing for uranium hexafluoride")
+print(conv.overall_conversion("Uranium hexafluoride", 25, None, None))
+print("Testing for 1,3,5 heptatriene")
+print(conv.overall_conversion("Hepta-1,3,5-triene", None, None, None))
+print("testing for aspirin")
+print(conv.overall_conversion("Aspirin", None, "ASPIRIN.sdf", None))
+
+
+
+
+
+
+
+    
