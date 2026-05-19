@@ -1,4 +1,5 @@
-#import numpy as np
+import numpy as np
+import pointgroup as pg
 #import pandas as pd
 import csv
 from pathlib import Path
@@ -29,4 +30,80 @@ def get_symmetry_set(point_group:str)->set:
     
     return Symmetry_Elements[point_group]
 
+def read_xyz_file(xyz_file):
+    '''
+    ...
+    '''
+    with ... open as file:
 
+def get_inversion_centre(xyz_file):
+    '''
+    Find the coordinates of the inversion centre i of the molecule.
+
+    :param xyz_file: the xyz file of the studied molecule
+    :type xyz_file: ... 
+
+    :return Inversion_center (NDArray[float]): the coordinates of the inversion centre i
+    '''
+    point_group=pg.PointGroup(xyz_file)
+    Symmetry_Elements=get_symmetry_set(point_group)
+    if 'i' in Symmetry_Elements:
+        i=pg.get_center_mass(xyz_file)
+        return i
+    else:
+        print("The molecule contains no inversion center")
+        return None
+
+
+def get_principal_axis(xyz_file, Symmetry_Elements:set):
+    '''
+    Establish a representation of the principal rotation axis of the molecule to be superimposed to its representation.
+    
+    :param xyz_file: the xyz file of the studied molecule
+    :type xyz_file: ...
+    :param Symmetry_Elements: set of the symmetry elements labels contained in the molecule
+    :type Symmetry_Elements: set
+    
+    :return Principal_axis (...): representation of the principal axis
+    '''
+    if 'C' or 'S' in Symmetry_Elements:
+        pass
+    else:
+        print("The molecule does not contain a rotation axis.")
+        return None
+    
+
+def get_rotation_axis(xyz_file, Symmetry_Elements:set):
+    '''
+    Establish a representation of the different rotation axis contained in the molecule
+    
+    :param xyz_file: the xyz file of the molecule
+    :type xyz_file: ...
+    :param ...: ...
+    :type ...: ...
+
+    :return ...
+    '''
+    if 'C' or 'S' in Symmetry_Elements:
+        pass
+    else:
+        print("...")
+        return None
+
+
+def get_symmetry_planes(xyz_file, Symmetry_Elements:set):
+    '''
+    Establish a representation of the symmetry planes contained in the studied molecule.
+    
+    :param xyz_file: the xyz file of the studied molecule
+    :type xyz_file: ...
+    :param Symmetry_Elements: set of the symmetry elements labels contained in the molecule
+    :type Symmetry_Elements: set
+    
+    :return Symmetry_Plane (Any): representation of a symmetry plane contained in the molecule
+    '''
+    if 'sigma' in Symmetry_Elements:
+        pass
+    else:
+        print("The molecule does not contain any symmetry planes.")
+        return None
