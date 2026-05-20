@@ -2,6 +2,22 @@ from rdkit import Chem
 from rdkit.Chem import AllChem
 from rdkit.Chem.rdchem import Mol
 from typing import Union
+import pubchempy as pcp
+
+def smiles_obtention (molecule_name: str)-> Union[str, None]:
+    '''
+    Gives the smiles of a molecule from one of its 
+    common non systematic names.
+
+    Args:
+        molecule_name (str): name of the studied molecule
+    
+    Returns:
+        str: smiles of the molecule
+    '''
+    for compound in pcp.get_compounds (molecule_name, "name"):
+        return compound.smiles
+    return None
 
 def mol_from_SMILES(smiles: str)-> Union[Mol, None]:
     '''

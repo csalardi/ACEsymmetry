@@ -3,8 +3,7 @@ import streamlit_ketcher as stk
 import pubchempy as pc
 import time
 
-from Visual_Display import get_symmetry_set
-from Conversion_xyz_From_SMILES import mol_from_SMILES, conformer_selection, overall_conversion
+from acesymmetry import Visual_Display as vd, Format_Conversion as conv
 
 st.set_page_config(
     page_title="Molecular symetry by ACE",
@@ -12,7 +11,7 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="collapsed"
 )
-st.logo("epfl-logo.svg", size="large" , link="https://www.epfl.ch/en/", icon_image=None,)
+st.logo("assets/epfl-logo.svg", size="large" , link="https://www.epfl.ch/en/", icon_image=None,)
 st.title(" Molecular symetry app")
 st.markdown("## Welcome")
 
@@ -25,7 +24,7 @@ def next_page(submitted, condition=True):
             st.session_state.current += 1 
             st.rerun()
 
-def Moleccule_notation(): 
+def Molecule_notation(): 
     '''Permet de choisir le type d'entrée pour la molecule entre SMILES, IUPAC et Dessin
     le nom de la molecule en SMILES en enregistrer dans st.session_state.molecule_name.'''
     col11, col12 = st.columns([2,3])
@@ -67,7 +66,7 @@ def nb_conformer_choice():
     previous_page()
 
 
-pages = [Moleccule_notation, nb_conformer_choice]
+pages = [Molecule_notation, nb_conformer_choice]
 
 if "current" not in st.session_state:
     st.session_state.current = 0
@@ -77,7 +76,7 @@ pages[st.session_state.current]()
 point_group = None
 if point_group: 
     try:
-        symmetry_set = get_symmetry_set(point_group)
+        symmetry_set = vd.get_symmetry_set(point_group)
         st.write("The point group of your molecule is", point_group,"and the corresponding symmetry set is :", symmetry_set,"." )
         with st.container(border=True):
             for axe in symmetry_set : 
