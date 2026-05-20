@@ -1,4 +1,4 @@
-import Conversion_xyz_from_name as conv
+from acesymmetry import Conversion_xyz_From_name as conv
 import matplotlib.pyplot as plt
 import math
 import matplotlib.pyplot as plt

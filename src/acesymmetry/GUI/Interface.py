@@ -2,7 +2,7 @@ import streamlit as st
 import streamlit_ketcher as stk
 import pubchempy as pc
 import time
-from ace_symmetry import Visual_Display, Conversion_xyz_From_SMILES
+from acesymmetry import Visual_Display, Conversion_xyz_From_SMILES
 
 
 st.set_page_config(
