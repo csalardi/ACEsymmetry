@@ -10,7 +10,7 @@ st.set_page_config(
     page_icon="",
     layout="wide",
     initial_sidebar_state="collapsed",)
-st.logo("epfl-logo.svg", size="large" , link="https://www.epfl.ch/en/", icon_image=None,)
+st.logo("assets/epfl-logo.svg", size="large" , link="https://www.epfl.ch/en/", icon_image=None,)
     
 st.title(" Molecular symmetry app")
 st.subheader("Welcome in our molecular symetry app ")
