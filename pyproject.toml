@@ -8,7 +8,14 @@ readme = "README.md"
 requires-python = ">=3.10"
 license = {file = "LICENSE"}
 description = "Tool for the visualisation of symmetry elements of molecules"
-dependencies = ["rdkit","streamlit","streamlit_ketcher","pointgroup","numpy","matplotlib","pubchempy"
+dependencies = [
+    "rdkit",
+    "streamlit",
+    "streamlit_ketcher",
+    "pointgroup",
+    "numpy",
+    "matplotlib",
+    "pubchempy"
 ]
 authors = [
     {name = "Cyrielle Salardi--Brahy", email = "cyrielle.salardi-brahy@epfl.ch"}
@@ -47,7 +54,7 @@ doc = [
 ]
 
 [tool.hatch.version]
-path = "src/ace_symmetry/__init__.py"
+path = "src/acesymmetry/__init__.py"
 
 [tool.pytest.ini_options]
 testpaths = [
