@@ -4,51 +4,66 @@ from rdkit.Chem.rdchem import Mol
 from typing import Union
 import pubchempy as pcp
 
-def smiles_obtention (molecule_name: str)-> Union[str, None]:
+def smiles_from_name(molecule_name:str)-> Union[str, None]:
     '''
-    Gives the smiles of a molecule from one of its 
-    common non systematic names.
+    Gives the smiles of a molecule from one of its common non systematic names.
 
-    Args:
-        molecule_name (str): name of the studied molecule
+    :param molecule_name: name of the studied molecule
+    :type molecule_name: str
     
-    Returns:
-        str: smiles of the molecule
+    :return compound.smiles (str): smiles of the molecule
+    :return None (None): unfound compound
     '''
-    for compound in pcp.get_compounds (molecule_name, "name"):
+    for compound in pcp.get_compounds(molecule_name, "name"):
         return compound.smiles
     return None
 
-def mol_from_SMILES(smiles: str)-> Union[Mol, None]:
+def mol_from_smiles(smiles:str)-> Union[Mol, None]:
     '''
-    Gives the Mol object of a molecule from its smiles.
+    Gives the Mol object of a molecule from its SMILES.
 
-    Args:
-        smiles (str): smiles of the molecule.
+    :param smiles: SMILES of the molecule.
+    :type smiles: str
         
-    Returns:
-        str: "Invalid smiles or impossible molecule" to indicate the non validity
-        of the smiles or that of the studied molecule.
-        Mol: Mol object of the molecule.
+    :return mol (Mol): Mol object of the molecule.
+    :return None (None): None for non valid SMILES or molecule.
     '''
-    mol: Union[Mol, None] = Chem.MolFromSmiles(smiles, sanitize=True)
-    if mol == None:
-        return(None)
-    else:
-        mol = Chem.AddHs(mol, addCoords=True)
-        return mol
+    if not smiles == None:
+        mol: Union[Mol, None] = Chem.MolFromSmiles(smiles, sanitize=True)
+        if mol == None:
+            return None
+        else:
+            mol = Chem.AddHs(mol, addCoords=True)
+            return mol
+    return None
+    
+def name_from_mol(mol:Mol)-> Union[str, None]:
+    '''
+    Gives the IUPAC name of a molecule from its Mol object
+    
+    :param mol: Mol object of the molecule.
+    :type mol: Mol
 
-def contains_metal(mol: Mol) -> bool:
+    :return iupac_name (str): IUPAC name of the molecule.
+    :return None (None): unfound compound.
+    '''
+    if not mol == None:
+        smiles=Chem.MolToSmiles(mol)
+        for compound in pcp.get_compounds(smiles, "smiles"):
+            return compound.iupac_name
+        return None
+    return None
+
+def contains_metal(mol:Mol)-> bool:
     '''
     Detects whether a molecule contains a metal atom,
     indicating possible coordination chemistry.
     
-    Args:
-        mol (Mol): RDKit molecule object
-        
-    Returns:
-        bool: True in case of detection of a metal
-        bool: False in case of non-detection of a metal
+    :param mol: RDKit molecule object.
+    :type mol: Mol
+
+    :return True (bool): True in case of detection of a metal.
+    :return False (bool): False in case of absence of a metal.
     '''
 
     metal_atomic_numbers: set = {
@@ -75,39 +90,40 @@ def contains_metal(mol: Mol) -> bool:
             return True
     return False
 
-def conformer_selection(mol: Mol, num_confs: Union[int, None], filename_1: str)-> Union[None, int]:
+def conformer_selection(mol:Mol, num_confs:int=1000, filename_1:str="default")-> Union[None, int]:
     '''
     Gives the index of the most stable conformer found for the molecule.
-    Paralelly builds the SDF file for the said most stable conformer
-    identified.
+    Paralelly builds the SDF file for the said most stable conformer identified.
     Returns None in case of failure of the conformer generation.
 
-    Args:
-        smiles (str): smiles of the molecules.
-        num_confs (int): Number of conformers to generate.
-        filename_1 (str); Name of the SDF file to generate
-                
-    Returns:
-        None: Indicate the failure of the generation
-        int: Index of the most stable conformer found
+    :param smiles: smiles of the molecules.
+    :type smiles: str
+    :param num_confs: Number of conformers to generate, where the default is set on 1000.
+    :type num_confs: int
+    :param filename_1: Name of the SDF file to generate, where the defaut setting corresponds to the iupac name of the molecule.
+    :type filename_1: str
+
+    :return conf_id (int): Index of the most stable conformer found (mono- or di- atomic molecules)
+    :return most_stable_conformer (int): Index of the most stable conformer found
+    :return None (None): Indicate the failure of the generation
     '''
+    if filename_1 == "default":
+        filename_1=name_from_mol(mol)
     if mol.GetNumAtoms()<3:
-        conf_id: int=AllChem.EmbedMolecule(mol)
+        conf_id:int=AllChem.EmbedMolecule(mol)
         if conf_id == -1:
             return None
         else:
-            sdf_block: str=Chem.MolToMolBlock(mol,confId=conf_id)
+            sdf_block:str=Chem.MolToMolBlock(mol,confId=conf_id)
             with open(filename_1, "w") as file:
                 file.write(sdf_block)
             return conf_id
     else:
-        if num_confs == None:
-            num_confs=10000
         params=AllChem.ETKDGv3()
         params.pruneRmsThresh = 0.5               
         conf_ids = AllChem.EmbedMultipleConfs(mol, numConfs=num_confs, params=params)
         if not conf_ids:
-            return (None)
+            return None
         else:
             energies: dict[int,float] = {}
             props = AllChem.MMFFGetMoleculeProperties(mol)
@@ -131,7 +147,7 @@ def conformer_selection(mol: Mol, num_confs: Union[int, None], filename_1: str)-
             return most_stable_conformer
   
 
-def overall_conversion(smiles: str, num_confs: Union[None, int], filename_1: Union[str, None]=None, filename_2: Union[str, None]=None )-> str:
+def overall_conversion_from_smiles(smiles:str, num_confs:int=1000, filename_1:str="default", filename_2:str="default")-> str:
     '''
     Gives the xyz block (str) of the molecules introduced through its smiles. Generate the xyz file
     parallelly, as well as the SDF file.
@@ -139,32 +155,30 @@ def overall_conversion(smiles: str, num_confs: Union[None, int], filename_1: Uni
     Gives a message (str) in case of failure in the conformer generation.
     Gives a message (str) in case of failure of the identification of the molecule.
         
-    Args:
-        smiles (str): miles of the studied molecule
-        num_confs (int): Number of conformers to generate.
+    :param smiles: smiles of the studied molecule.
+    :type smiles: str
+    :param num_confs: Number of conformers to generate, where the default is set on 1000.
+    :type num_confs: int
+    :param filename_1: Name of the SDF file to generate, where the defaut setting corresponds to the iupac name of the molecule.
+    :type filename_1: str
+    :param filename_2: Name of the xyz file to generate, where the defaut setting corresponds to the iupac name of the molecule.
+    :type filename_2: str 
         
-        
-    Returns:
-        str: "No conformer generated" to indicate the failure of the generation
-        str: "Invalid smiles or impossible molecule" to indicate the invalidity
-        str: "Unidentified molecule" to indicate that the name of the studied molecule
-        is not found in the pubchem library.
-        of the smiles, or the chemical nonsenseless of the studied molecule.
-        str: "Files succesfully generated" to indicate the succesful generation of SDF and
-        xyz files.
-        str: "3D structure not found" to indicate the impossibility of finfing the appropriate
-        tridimentional structure of the studied coordination compound.
-        str: "Unsupported type of compound" to indicate the impossibility of the script to deal with
-        coordination complexes
-        
+    :return "No conformer generated" (str): to indicate the failure of the generation
+    :return "Invalid smiles or impossible molecule" (str): to indicate the invalidity of the smiles, or the chemical nonsenseness of the studied molecule.
+    :return "Unidentified molecule" (str): to indicate that the name of the studied molecule is not found in the pubchem library.
+    :return "Files succesfully generated" (str): to indicate the succesful generation of SDF and xyz files.
+    :return "3D structure not found" (str): to indicate the impossibility of finfing the appropriate tridimentional structure of the studied coordination compound.
+    :return "Unsupported type of compound" (str): to indicate the impossibility of the script to deal with coordination complexes.    
     '''
-    mol: Union[Mol, None]=mol_from_SMILES(smiles)
+    mol:Union[Mol, None]=mol_from_smiles(smiles)
+    molecule_name:Union[str, None]=name_from_mol(mol)
     if mol == None:
         return "Invalid smiles or impossible molecule"
     else:
         test_metal: bool=contains_metal(mol)
         if test_metal == False:
-            if filename_1 == None:
+            if filename_1 == "default":
                 most_stable_conformer: Union[int, None]=conformer_selection(mol, num_confs, f"{molecule_name}.SDF")
             else:
                 most_stable_conformer: Union[int, None]=conformer_selection(mol, num_confs, filename_1)            
@@ -172,7 +186,7 @@ def overall_conversion(smiles: str, num_confs: Union[None, int], filename_1: Uni
                 return "No conformer generated"
             else:
                 xyz_block=Chem.MolToXYZBlock(mol, confId=most_stable_conformer)
-                if filename_2 == None:
+                if filename_2 == "default":
                     with open(f"{molecule_name}.xyz", "w") as f:
                         f.write(xyz_block)
                 else:
@@ -182,3 +196,22 @@ def overall_conversion(smiles: str, num_confs: Union[None, int], filename_1: Uni
         else:
             return "Unsupported type of compound"
 
+
+def overall_conversion_from_name(name:str, num_confs:int=1000, filename_1:str="default", filename_2:str="default")-> str:
+    '''
+    Overall conversion script from a molecule's common name, building the xyz bloc as well as the SDF file.
+    
+    :param name: name of the studied molecule.
+    :type name: str
+    :param num_confs: Number of conformers to generate, where the default is set on 1000.
+    :type num_confs: int
+    :param filename_1: Name of the SDF file to generate, where the defaut setting corresponds to the iupac name of the molecule.
+    :type filename_1: str
+    :param: filename_2: Name of the xyz file to generate, where the defaut setting corresponds to the iupac name of the molecule.
+    :type filename_2: str
+    
+    :return conversion (str): Indication on the conversion status.
+    '''
+    smiles=smiles_from_name(name)
+    conversion=overall_conversion_from_smiles(smiles, num_confs, filename_1, filename_2)
+    return conversion

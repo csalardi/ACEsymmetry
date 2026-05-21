@@ -1,36 +1,40 @@
-from acesymmetry import Conversion_xyz_From_name as conv
-import matplotlib.pyplot as plt
-import math
-import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
+from acesymmetry import Format_Conversion as conv
 
-print("Testing for hydrogen")
-print(conv.overall_conversion("Dihydrogen",None, "H2.SDF", "H2.xyz"))
-print("Testing for Helium")
-print(conv.overall_conversion("Helium", None, None, None))
-print("Testing for invalid name")
-print(conv.overall_conversion("fresh_butter", None, None, None))
-print("Testing for benzene")
-print(conv.overall_conversion("Benzene", None, None, None))
-print("testing for propanol")
-print(conv.overall_conversion("Propan-2-ol", None, None, None))
-print("testing for butanol")
-print(conv.overall_conversion("Butan-1-ol", None, "But-1-ol.SDF", "But-1-ol.xyz"))
-print("Testing for ferrocene")
-print(conv.overall_conversion("Dicyclopentadienyliron", None, None, None))
-print("Testing for cisplatin")
-print(conv.overall_conversion("cis-diamminedichloroplatinum(II)", None, None, None))
-print("testing for uranium hexafluoride")
-print(conv.overall_conversion("Uranium hexafluoride", 25, None, None))
-print("Testing for 1,3,5 heptatriene")
-print(conv.overall_conversion("Hepta-1,3,5-triene", None, None, None))
-print("testing for aspirin")
-print(conv.overall_conversion("Aspirin", None, "ASPIRIN.sdf", None))
+print(f"The corresponding SMILES for terbutanol is: \n {conv.smiles_from_name('terbutanol')}")
+print(f"The corresponding SMILES for butan-2-ol is: \n {conv.smiles_from_name('butan-2-ol')}")
+print(f"The corresponding SMILES for carbon dioxide is: \n {conv.smiles_from_name('dioxyde de carbone')}") # Also working with french input
 
+co2:str=conv.smiles_from_name('carbon dioxide')
 
+print(f"The corresponding SMILES for carbon dioxide is: \n {co2}")
+print(f"The corresponding SMILES for methane is: \n {conv.smiles_from_name('méthane')}") # No SMILES when accent in the name 
+print(f"The corresponding SMILES for methane is: \n {conv.smiles_from_name('methane')}")
 
+methane:str='C'
+methane_rep=conv.mol_from_smiles(methane)
 
+print(f"The Mol object of methane is: \n {methane_rep}")
 
+print(f"The Mol object {methane_rep} represents {conv.name_from_mol(methane_rep)}")
 
+print(f"Methane contains a metal: {conv.contains_metal(methane_rep)}")
+print(f"Sodium chloride contains a metal: {conv.contains_metal(conv.mol_from_smiles(conv.smiles_from_name('sodium chloride')))}")
 
-    
+print(f"The index of the most stable conformer of methane is: \n {conv.conformer_selection(methane_rep)}")
+print(f"The index of the most stable conformer of Propan-2-ol is: \n {conv.conformer_selection(conv.mol_from_smiles(conv.smiles_from_name('propan-2-ol')))}")
+
+print(f"Testing for carbon dioxide: \n {conv.overall_conversion_from_smiles(co2)}")
+
+print(f"Testing for hydrogen: \n  {conv.overall_conversion_from_name('Dihydrogen',filename_1='H2.SDF',filename_2='H2.xyz')}")
+print(f"Testing for Helium: \n {conv.overall_conversion_from_name('Helium')}")
+
+print(f"Testing for invalid name: \n {conv.overall_conversion_from_name('fresh_butter')}")
+print(f"Testing for benzene: \n {conv.overall_conversion_from_name('Benzene')}")
+print(f"Testing for propanol: \n {conv.overall_conversion_from_name('Propan-2-ol')}")
+print(f"Testing for butanol: \n {conv.overall_conversion_from_name('Butan-1-ol', 2000, 'But-1-ol.SDF', 'But-1-ol.xyz')}")
+print(f"Testing for ferrocene: \n {conv.overall_conversion_from_name('Dicyclopentadienyliron')}")
+print(f"Testing for cisplatin: \n {conv.overall_conversion_from_name('cis-diamminedichloroplatinum(II)')}")
+print(f"Testing for uranium hexafluoride: \n {conv.overall_conversion_from_name('Uranium hexafluoride', 25)}")
+print(f"Testing for 1,3,5 heptatriene: \n {conv.overall_conversion_from_name('Hepta-1,3,5-triene')}")
+print(f"Testing for aspirin: \n {conv.overall_conversion_from_name('Aspirin', filename_1='ASPIRIN.sdf')}")
+print(f"Testing for porphyrin: \n {conv.overall_conversion_from_name('Porphyrin', filename_1='Porphyrin.sdf')}")
