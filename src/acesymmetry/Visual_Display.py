@@ -30,7 +30,7 @@ def read_xyz_file(xyz_file_name:str):
     :param xyz_file_name: Name of the file to be read
     :type xyz_file_name: str
 
-    :return (Elements,Coordinates) (tupple(list,NDArray)): A tupple of a list of elements and numpy array of positions.
+    :return (Elements,Coordinates) (tupple(list,NDArray[float])): A tupple of a list of elements and numpy array of positions.
     '''
     xyz_file:Path=Path.cwd()/xyz_file_name
     Elements:list=[]
@@ -52,7 +52,7 @@ def get_inversion_centre(xyz_file_name:str):
     Find the coordinates of the inversion centre i of the molecule.
 
     :param xyz_file: the xyz file of the studied molecule
-    :type xyz_file: ... 
+    :type xyz_file: str 
 
     :return Inversion_center (NDArray[float]): the coordinates of the inversion centre i
     '''
@@ -66,3 +66,6 @@ def get_inversion_centre(xyz_file_name:str):
     else:
         print("The molecule contains no inversion center")
         return None
+    
+def display():
+    pass

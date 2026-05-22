@@ -1,6 +1,7 @@
 ![Project Logo](assets/Logo.png)
 
 ![Coverage Status](assets/coverage-badge.svg)
+[![License](https://img.shields.io/github/license/csalardi/ACEsymmetry)](https://github.com/csalardi/ACEsymmetry/blob/main/LICENSE)
 
 <h1 align="center">
 ACEsymmetry
@@ -10,6 +11,12 @@ ACEsymmetry
 
 
 Tool for the visualisation of symmetry elements of molecules
+
+## Authors
+
+[Alexis Vayron (@AVayron)] (https://github.com/AVayron) 
+[Cyrielle Salardi--Brahy (@csalardi)] (https://github.com/csalardi)
+[Elodie Scherz (@escherz)] (https://github.com/escherz)
 
 ## 🔥 Usage
 
@@ -26,7 +33,7 @@ Short and sweet, but the real power lies in the detailed documentation.
 
 ## 👩‍💻 Installation
 
-Create a new environment, you may also give the environment a different name. 
+To explore molecular symmetry, start by creating a new environment containing the ACEsymmetry package and its dependencies. (You may give the environment a name of your choosing.)
 
 ```
 conda create -n ace_symmetry python=3.10 
@@ -67,6 +74,24 @@ To install the package, run
 ```
 (ace_symmetry) $ pip install -e ".[test,doc]"
 ```
+## Key dependencies
+[**rdkit**]
+
+
+## Optional dependencies
+
+Amoung the optional dependencies of this package is typer. This package may be added to the environement if you prefer to be able to launch the acesymmetry app from wherever on your computer as long as the ace_symmetry environment is activated.
+With typer you only need to enter acesymmetry_app in your terminal and it will automatically launch the application.
+
+Nota: This currently is not fully supported. You need to be in the cloned folder to launch the application. This is due to unresolved path management issues that are yet to be corrected.
+
+## License
+
+[MIT](LICENSE)
+
+## Acknowledgements
+
+The ...
 
 ### Run tests and coverage
 
