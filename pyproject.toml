@@ -45,6 +45,7 @@ test = [
     "pytest-cov",
     "tox",
     "genbadge[coverage]",
+    "typer",
 ]
 doc = [
     "furo",
