@@ -14,9 +14,9 @@ Tool for the visualisation of symmetry elements of molecules
 
 ## Authors
 
-[Alexis Vayron (@AVayron)] (https://github.com/AVayron) 
-[Cyrielle Salardi--Brahy (@csalardi)] (https://github.com/csalardi)
-[Elodie Scherz (@escherz)] (https://github.com/escherz)
+[Alexis Vayron (@AVayron)](https://github.com/AVayron)  
+[Cyrielle Salardi--Brahy (@csalardi)](https://github.com/csalardi) -- cyrielle.salardi-brahy@epfl.ch  
+[Elodie Scherz (@escherz)](https://github.com/escherz)  
 
 ## 🔥 Usage
 
@@ -75,10 +75,23 @@ To install the package, run
 (ace_symmetry) $ pip install -e ".[test,doc]"
 ```
 ## Key dependencies
-[**rdkit**]
+The following dependencies are essential for the functionning of the acesymmetry package. They should all be automatically installed when downloading the present package. However, it is recommended to check their installation by using the command:
+```
+(ace_symmetry) $ conda list | grep <package_name>
+```
 
+[**rdkit**](https://www.rdkit.org/)  
+[**streamlit**](https://streamlit.io/)  
+[**streamlit_ketcher**](https://github.com/streamlit/streamlit-ketcher)  
+[**pointgroup**](https://github.com/abelcarreras/pointgroup)  
+[**numpy**](https://numpy.org/)  
+[**matplotlib**](https://matplotlib.org/)  
+[**pubchempy**](https://docs.pubchempy.org/en/latest/)  
 
 ## Optional dependencies
+
+[**typer**](https://typer.tiangolo.com/)  
+[**tox**](https://python-basics-tutorial.readthedocs.io/en/latest/test/tox.html)  
 
 Amoung the optional dependencies of this package is typer. This package may be added to the environement if you prefer to be able to launch the acesymmetry app from wherever on your computer as long as the ace_symmetry environment is activated.
 With typer you only need to enter acesymmetry_app in your terminal and it will automatically launch the application.
