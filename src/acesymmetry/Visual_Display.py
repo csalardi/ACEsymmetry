@@ -1,18 +1,8 @@
-import numpy as np
 import pointgroup as pg
-#import pandas as pd
-import csv
+import numpy as np
 from pathlib import Path
-
-Source_symmetry:Path=Path(__file__).parent/"data"/"Symmetry_elements_dictionnary.csv"
-Symmetry_Elements:dict[str,set]={}
-with Source_symmetry.open("r") as file:
-    collection=csv.reader(file, delimiter=";")
-    for lign in collection:
-        Symmetry_Elements[lign[0]]=set()
-        for i in range(1, len(lign)):
-            Symmetry_Elements[lign[0]].add(lign[i])
-        Symmetry_Elements[lign[0]].discard('')
+import matplotlib.pyplot as plt
+from acesymmetry import Symmetry_Elements_Dico
 
 def get_symmetry_set(point_group:str)->set:
     '''
@@ -25,17 +15,39 @@ def get_symmetry_set(point_group:str)->set:
     '''
     if not isinstance(point_group,str):
         raise TypeError(f"Invalid type {type(point_group)}: 'point_group' should be passed as a string.")
-    if not point_group in Symmetry_Elements.keys():
+    if not point_group in Symmetry_Elements_Dico.keys():
         raise ValueError("The entered 'point_group' label isn't recognised.")
     
-    return Symmetry_Elements[point_group]
+    return Symmetry_Elements_Dico[point_group]
 
-def read_xyz_file(xyz_file):
-    '''
-    ...
-    '''
 
-def get_inversion_centre(xyz_file):
+def read_xyz_file(xyz_file_name:str):
+    '''
+    xyz file reader which separates the list of the elements from the coordinates in two different lists.
+    The link between the two is conserved by the list indexes.
+    The script must be executed in the folder containing the xyz file.
+
+    :param xyz_file_name: Name of the file to be read
+    :type xyz_file_name: str
+
+    :return (Elements,Coordinates) (tupple(list,NDArray)): A tupple of a list of elements and numpy array of positions.
+    '''
+    xyz_file:Path=Path.cwd()/xyz_file_name
+    Elements:list=[]
+    Coords=[]
+    with xyz_file.open('r') as file:
+        table=file.readlines()
+        for row in table:
+            Elements.append(row[0])
+            Vector=[]
+            for column in row.split()[1:]:
+                Vector.append(float(column))
+            Coords.append(Vector)
+    Coordinates=np.asarray(Coords)
+    return (Elements,Coordinates)
+
+    
+def get_inversion_centre(xyz_file_name:str):
     '''
     Find the coordinates of the inversion centre i of the molecule.
 
@@ -44,65 +56,13 @@ def get_inversion_centre(xyz_file):
 
     :return Inversion_center (NDArray[float]): the coordinates of the inversion centre i
     '''
-    point_group=pg.PointGroup(xyz_file)
+    Symbols=read_xyz_file(xyz_file_name)[0]
+    Positions=read_xyz_file(xyz_file_name)[1]
+    point_group=pg.PointGroup(symbols=Symbols, positions=Positions).get_point_group()
     Symmetry_Elements=get_symmetry_set(point_group)
     if 'i' in Symmetry_Elements:
-        i=pg.get_center_mass(xyz_file)
+        i=pg.tools.get_center_mass(symbols=Symbols, coordinates=Positions)
         return i
     else:
         print("The molecule contains no inversion center")
-        return None
-
-
-def get_principal_axis(xyz_file, Symmetry_Elements:set):
-    '''
-    Establish a representation of the principal rotation axis of the molecule to be superimposed to its representation.
-    
-    :param xyz_file: the xyz file of the studied molecule
-    :type xyz_file: ...
-    :param Symmetry_Elements: set of the symmetry elements labels contained in the molecule
-    :type Symmetry_Elements: set
-    
-    :return Principal_axis (...): representation of the principal axis
-    '''
-    if 'C' or 'S' in Symmetry_Elements:
-        pass
-    else:
-        print("The molecule does not contain a rotation axis.")
-        return None
-    
-
-def get_rotation_axis(xyz_file, Symmetry_Elements:set):
-    '''
-    Establish a representation of the different rotation axis contained in the molecule
-    
-    :param xyz_file: the xyz file of the molecule
-    :type xyz_file: ...
-    :param ...: ...
-    :type ...: ...
-
-    :return ...
-    '''
-    if 'C' or 'S' in Symmetry_Elements:
-        pass
-    else:
-        print("...")
-        return None
-
-
-def get_symmetry_planes(xyz_file, Symmetry_Elements:set):
-    '''
-    Establish a representation of the symmetry planes contained in the studied molecule.
-    
-    :param xyz_file: the xyz file of the studied molecule
-    :type xyz_file: ...
-    :param Symmetry_Elements: set of the symmetry elements labels contained in the molecule
-    :type Symmetry_Elements: set
-    
-    :return Symmetry_Plane (Any): representation of a symmetry plane contained in the molecule
-    '''
-    if 'sigma' in Symmetry_Elements:
-        pass
-    else:
-        print("The molecule does not contain any symmetry planes.")
         return None

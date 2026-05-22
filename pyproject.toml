@@ -70,3 +70,6 @@ omit = [
 exclude_also = [
     "if __name__ == .__main__.:",
 ]
+
+[project.scripts]
+acesymmetry_app = "acesymmetry.GUI.launcher:launch"
