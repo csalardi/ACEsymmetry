@@ -108,7 +108,7 @@ def conformer_selection(mol:Mol, num_confs:int=1000, filename_1:str="default")->
     :return None (None): Indicate the failure of the generation
     '''
     if filename_1 == "default":
-        filename_1=name_from_mol(mol)
+        filename_1=f"{name_from_mol(mol)}.SDF"
     if mol.GetNumAtoms()<3:
         conf_id:int=AllChem.EmbedMolecule(mol)
         if conf_id == -1:
@@ -149,7 +149,7 @@ def conformer_selection(mol:Mol, num_confs:int=1000, filename_1:str="default")->
 
 def overall_conversion_from_smiles(smiles:str, num_confs:int=1000, filename_1:str="default", filename_2:str="default")-> str:
     '''
-    Gives the xyz block (str) of the molecules introduced through its smiles. Generate the xyz file
+    Gives the xyz block (.xyz) of the molecules introduced through its smiles. Generate the xyz file
     parallelly, as well as the SDF file.
     Gives a message (str) in case of invalid smiles or molecule.
     Gives a message (str) in case of failure in the conformer generation.

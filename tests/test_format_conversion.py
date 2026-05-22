@@ -1,5 +1,25 @@
 from acesymmetry import Format_Conversion as conv
 
+def test_smiles_from_name():
+    assert conv.smiles_from_name('terbutanol') == "CC(C)(C)O"
+    assert conv.smiles_from_name('butan-2-ol') == "CCC(C)O"
+    assert conv.smiles_from_name('dioxyde de carbone') == "C(=O)=O"
+
+def test_contains_metal():
+    assert conv.contains_metal(conv.mol_from_smiles(conv.smiles_from_name('methane'))) == False
+    assert conv.contains_metal(conv.mol_from_smiles(conv.smiles_from_name('sodium chloride'))) == True
+
+def test_conformer_selection():
+    assert conv.conformer_selection(conv.mol_from_smiles(conv.smiles_from_name('propan-2-ol'))) == 0
+
+def test_overall_conversion_from_smiles():
+    assert conv.overall_conversion_from_smiles(conv.smiles_from_name('carbon dioxide')) == "Files succesfully generated"
+
+def test_overall_conversion_from_name():
+    assert conv.overall_conversion_from_name('Porphyrin', filename_1='Porphyrin.sdf') == "Files succesfully generated"
+    assert conv.overall_conversion_from_name('fresh_butter') == "Invalid smiles or impossible molecule"
+    assert conv.overall_conversion_from_name('Uranium hexafluoride', 25) == "Unsupported type of compound"
+
 print(f"The corresponding SMILES for terbutanol is: \n {conv.smiles_from_name('terbutanol')}")
 print(f"The corresponding SMILES for butan-2-ol is: \n {conv.smiles_from_name('butan-2-ol')}")
 print(f"The corresponding SMILES for carbon dioxide is: \n {conv.smiles_from_name('dioxyde de carbone')}") # Also working with french input
@@ -27,7 +47,6 @@ print(f"Testing for carbon dioxide: \n {conv.overall_conversion_from_smiles(co2)
 
 print(f"Testing for hydrogen: \n  {conv.overall_conversion_from_name('Dihydrogen',filename_1='H2.SDF',filename_2='H2.xyz')}")
 print(f"Testing for Helium: \n {conv.overall_conversion_from_name('Helium')}")
-
 print(f"Testing for invalid name: \n {conv.overall_conversion_from_name('fresh_butter')}")
 print(f"Testing for benzene: \n {conv.overall_conversion_from_name('Benzene')}")
 print(f"Testing for propanol: \n {conv.overall_conversion_from_name('Propan-2-ol')}")
