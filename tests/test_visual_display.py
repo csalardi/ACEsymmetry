@@ -5,7 +5,7 @@ def test_get_symmetry_set():
     assert vd.get_symmetry_set('Ci') == {'E','i'}
 
 def test_get_inversion_centre():
-    assert vd.get_inversion_centre("../data/C1.xyz") == None
+    assert vd.get_inversion_centre("data/C1.xyz") == None
 
 '''
 print(f"Point group C1 contains the following symmetry elements: {vd.get_symmetry_set('C1')}")
