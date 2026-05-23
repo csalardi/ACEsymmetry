@@ -4,7 +4,7 @@ from rdkit.Chem.rdchem import Mol
 from typing import Union
 import pubchempy as pcp
 
-def smiles_from_name(molecule_name:str)-> Union[str, None]:
+def smiles_from_name(molecule_name:str)-> str:
     '''
     Gives the smiles of a molecule from one of its common non systematic names.
 
@@ -12,11 +12,12 @@ def smiles_from_name(molecule_name:str)-> Union[str, None]:
     :type molecule_name: str
     
     :return compound.smiles (str): smiles of the molecule
-    :return None (None): unfound compound
     '''
+    if not isinstance(molecule_name,str):
+        raise TypeError(f"Invalid input type {type(molecule_name)}: 'molecule_name' should be passed as a string.")
     for compound in pcp.get_compounds(molecule_name, "name"):
         return compound.smiles
-    return None
+    raise ImportError("Unfound compound: the name of the entered molecule is not found in the pubchem library.")
 
 def mol_from_smiles(smiles:str)-> Union[Mol, None]:
     '''
@@ -165,38 +166,30 @@ def overall_conversion_from_smiles(smiles:str, num_confs:int=1000, filename_1:st
     :type filename_1: str
     :param filename_2: Name of the xyz file to generate, where the defaut setting corresponds to the iupac name of the molecule.
     :type filename_2: str 
-        
-    :return "No conformer generated" (str): to indicate the failure of the generation
-    :return "Invalid smiles or impossible molecule" (str): to indicate the invalidity of the smiles, or the chemical nonsenseness of the studied molecule.
-    :return "Unidentified molecule" (str): to indicate that the name of the studied molecule is not found in the pubchem library.
-    :return "Files succesfully generated" (str): to indicate the succesful generation of SDF and xyz files.
-    :return "3D structure not found" (str): to indicate the impossibility of finfing the appropriate tridimentional structure of the studied coordination compound.
-    :return "Unsupported type of compound" (str): to indicate the impossibility of the script to deal with coordination complexes.    
+    
+    :return ("Files succesfully generated", filename_1, filename_2) (tuple): to indicate the succesful generation of SDF and xyz files with a reminder of the filenames.
     '''
     mol:Union[Mol, None]=mol_from_smiles(smiles)
     molecule_name:Union[str, None]=name_from_mol(mol)
     if mol == None:
-        return "Invalid smiles or impossible molecule"
+        raise ValueError("Invalid smiles or impossible molecule: invalidity of the smiles, or chemical nonsensness of the entered molecule.")
     else:
         test_metal: bool=contains_metal(mol)
         if test_metal == False:
             if filename_1 == "default":
-                most_stable_conformer: Union[int, None]=conformer_selection(mol, num_confs, f"{molecule_name}.SDF")
-            else:
-                most_stable_conformer: Union[int, None]=conformer_selection(mol, num_confs, filename_1)            
+                filename_1=f"{molecule_name}.SDF"
+            most_stable_conformer: Union[int, None]=conformer_selection(mol, num_confs, filename_1)            
             if most_stable_conformer == None:
-                return "No conformer generated"
+                raise ImportError("No conformer generated: failure in the generation of the most stable conformer.")
             else:
                 xyz_block=Chem.MolToXYZBlock(mol, confId=most_stable_conformer)
                 if filename_2 == "default":
-                    with open(f"{molecule_name}.xyz", "w") as f:
-                        f.write(xyz_block)
-                else:
-                    with open(filename_2, "w") as f:
-                        f.write(xyz_block)
-                return "Files succesfully generated"
+                    filename_2=f"{molecule_name}.xyz"
+                with open(filename_2, "w") as f:
+                    f.write(xyz_block)    
+                return ("Files succesfully generated", filename_1, filename_2)
         else:
-            return "Unsupported type of compound"
+            raise ValueError("Unsupported type of compound: impossibility of the script to deal with coordination complexes due to heavy electronic computations.")
 
 
 def overall_conversion_from_name(name:str, num_confs:int=1000, filename_1:str="default", filename_2:str="default")-> str:
@@ -212,7 +205,7 @@ def overall_conversion_from_name(name:str, num_confs:int=1000, filename_1:str="d
     :param: filename_2: Name of the xyz file to generate, where the defaut setting corresponds to the iupac name of the molecule.
     :type filename_2: str
     
-    :return conversion (str): Indication on the conversion status.
+    :return conversion (tuple): Indication on the conversion status and reminder of the filenames.
     '''
     smiles=smiles_from_name(name)
     conversion=overall_conversion_from_smiles(smiles, num_confs, filename_1, filename_2)

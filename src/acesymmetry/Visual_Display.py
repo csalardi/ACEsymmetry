@@ -2,6 +2,7 @@ import pointgroup as pg
 import numpy as np
 from pathlib import Path
 import matplotlib.pyplot as plt
+import xyzrender
 from acesymmetry import Symmetry_Elements_Dico
 
 def get_symmetry_set(point_group:str)->set:
@@ -38,6 +39,8 @@ def read_xyz_file(xyz_file_name:str):
     with xyz_file.open('r') as file:
         table=file.readlines()
         for row in table:
+            if row[0] in {'0','1','2','3','4','5','6','7','8','9','\n'}:
+                continue            
             Elements.append(row[0])
             Vector=[]
             for column in row.split()[1:]:
@@ -67,5 +70,17 @@ def get_inversion_centre(xyz_file_name:str):
         print("The molecule contains no inversion center")
         return None
     
-def display():
-    pass
+
+def display(sdf_file_name:str, image:str="default"):
+    '''
+    Create the visual representation of the molecule with the xyzrender package. (Either .png, .svg, .pdf)
+
+    :param sdf_file_name: the SDF file of the studied molecule.
+    :type sdf_file_name: str
+    :param image: the name and extension of the output file, by default .png named the same as the sdf_file.
+    :type image: str
+    '''
+    molecule=xyzrender.load(sdf_file_name)
+    if image=="default":
+        image=sdf_file_name[:-3]+"png"    
+    xyzrender.render(molecule, output=image)
