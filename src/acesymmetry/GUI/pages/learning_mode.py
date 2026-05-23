@@ -7,7 +7,7 @@ symmetry_list:list[str]=list(symmetry_set)
 
 def check_linearity(point_group:str)->str:
     '''
-    Checks the linearity of the molecules (true only if it is Cinfv or Dinfv)
+    Checks the linearity of the molecules (true only if it is Cinfv or Dinfh)
 
     :param point_group: point group of the molecule provided by the appropriate programm
     :type point_group: str
