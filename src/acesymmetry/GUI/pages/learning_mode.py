@@ -48,7 +48,7 @@ def check_main_axis_multiplicity(point_group:str)->str:
     :return "true" (str) if the molecule has multiple main axes whose order is greater than 2
     :return "false" (str) if not
     '''
-    if point_group == "Ih" or point_group == "I" or point_group == "Oh"or point_group == "O" or point_group == "Td" or point_group == "T":
+    if point_group in {"Ih", "I", "Oh", "O", "Td", "T"}:
         return "true"
     else:
         return "false"
@@ -119,6 +119,34 @@ def check_dihedral_plane(symmetry_set:set[str])->str:
     else:
         return "false"
 
+def check_improper_rotation_axis(symmetry_list:list[str], n_ref:int)->str:
+    '''
+    Checks the presence of improper rotation axes with order 2n_ref
+    :param symmetry_set
+    :type set of strings
+
+    :return "true" (str) if the molecule has improper rotation axes with order 2n_ref
+    :return "false" (str) if not
+    '''
+    for element in symmetry_list:
+        if element.startswith("S") == True:
+            if int(element[1:]) == 2*n_ref:
+                return "true"
+    return "false"
+
+def check_icosahedral_symmetry(point_group:str)->str:
+    '''
+    Checks the presence of C5 to distinguish Oh and Ih
+    :param point_group
+    :type strs
+
+    :return "true" (str) if the molecule is Ih
+    :return "false" (str) if not
+    '''
+    if point_group == "Ih":
+        return "true"
+    else:
+        return "false"
 
             
 
