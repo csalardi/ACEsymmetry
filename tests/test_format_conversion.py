@@ -57,3 +57,5 @@ print(f"Testing for butanol: \n {conv.overall_conversion_from_name('Butan-1-ol',
 print(f"Testing for 1,3,5 heptatriene: \n {conv.overall_conversion_from_name('Hepta-1,3,5-triene')}")
 print(f"Testing for aspirin: \n {conv.overall_conversion_from_name('Aspirin', filename_1='ASPIRIN.SDF')}")
 print(f"Testing for porphyrin: \n {conv.overall_conversion_from_name('Porphyrin', filename_1='Porphyrin.SDF')}")
+print(f"Testing for sulfur hexafluoride: \n {conv.overall_conversion_from_name('Sulfur hexafluoride')}")
+print(f"testing for krypton difluoride: \n {conv.overall_conversion_from_name('Krypton difluoride')}")
