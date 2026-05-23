@@ -2,7 +2,7 @@ from acesymmetry import Symmetry_Elements_Dico
 from acesymmetry.Visual_Display import get_symmetry_set
 from typing import Union
 
-symmetry_set:set[str]=get_symmetry_set(point_group=)
+symmetry_set:set[str]=get_symmetry_set(point_group)
 symmetry_list:list[str]=list(symmetry_set)
 
 def check_linearity(point_group:str)->str:
@@ -15,7 +15,7 @@ def check_linearity(point_group:str)->str:
     :return "true" (str) if the molecule is linear
     :return "false" (str) if the molecule is not linear
     '''
-    if point_group == "Cinfv" or point_group == "Dinfv":
+    if point_group == "Cinfv" or point_group == "Dinfh":
         return "true"
     else:
         return "false"
@@ -138,7 +138,7 @@ def check_icosahedral_symmetry(point_group:str)->str:
     '''
     Checks the presence of C5 to distinguish Oh and Ih
     :param point_group
-    :type strs
+    :type str
 
     :return "true" (str) if the molecule is Ih
     :return "false" (str) if not
@@ -147,6 +147,4 @@ def check_icosahedral_symmetry(point_group:str)->str:
         return "true"
     else:
         return "false"
-
-            
 
