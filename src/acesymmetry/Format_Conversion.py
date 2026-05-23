@@ -119,6 +119,8 @@ def conformer_selection(mol:Mol, num_confs:int=1000, filename_1:str="default")->
                 file.write(sdf_block)
             return conf_id
     else:
+        if not AllChem.MMFFHasAllMoleculeParams(mol) and not AllChem.UFFHasAllMoleculeParams(mol):
+            return None
         params=AllChem.ETKDGv3()
         params.pruneRmsThresh = 0.5               
         conf_ids = AllChem.EmbedMultipleConfs(mol, numConfs=num_confs, params=params)
