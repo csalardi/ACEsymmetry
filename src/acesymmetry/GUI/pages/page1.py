@@ -33,6 +33,7 @@ def Molecule_notation_page():
     molecule_name = None
     IUPAC_molecule_name = None
     submitted = False
+    st.set_page_config(initial_sidebar_state="collapsed")
     if SMILES_or_IUPAC == "SMILES notation": 
         with col12:
             with st.form("smiles", enter_to_submit=True):
@@ -49,6 +50,7 @@ def Molecule_notation_page():
                         st.error("The IUPAC name of your molecule is invalid, try again !", icon = "❌")
                       
     elif SMILES_or_IUPAC == "Draw your molecule":
+        st.set_page_config(initial_sidebar_state="collapsed")
         with col12:
             molecule_name = stk.st_ketcher()
             if molecule_name:
@@ -73,7 +75,7 @@ def nb_conformer_choice_page():
             submitted = col22.button("Submit")
     else : 
         st.session_state.number_of_conformer = 1000
-        submitted = col21.button("Next")
+        submitted = col21.button("Next →")
     previous_page()
     next_page(submitted, st.session_state.number_of_conformer)
 
