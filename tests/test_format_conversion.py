@@ -27,7 +27,7 @@ print(f"The corresponding SMILES for carbon dioxide is: \n {conv.smiles_from_nam
 co2:str=conv.smiles_from_name('carbon dioxide')
 
 print(f"The corresponding SMILES for carbon dioxide is: \n {co2}")
-print(f"The corresponding SMILES for methane is: \n {conv.smiles_from_name('méthane')}") # No SMILES when accent in the name 
+#print(f"The corresponding SMILES for methane is: \n {conv.smiles_from_name('méthane')}") # No SMILES when accent in the name 
 print(f"The corresponding SMILES for methane is: \n {conv.smiles_from_name('methane')}")
 
 methane:str='C'
@@ -47,13 +47,13 @@ print(f"Testing for carbon dioxide: \n {conv.overall_conversion_from_smiles(co2)
 
 print(f"Testing for hydrogen: \n  {conv.overall_conversion_from_name('Dihydrogen',filename_1='H2.SDF',filename_2='H2.xyz')}")
 print(f"Testing for Helium: \n {conv.overall_conversion_from_name('Helium')}")
-print(f"Testing for invalid name: \n {conv.overall_conversion_from_name('fresh_butter')}")
+#print(f"Testing for invalid name: \n {conv.overall_conversion_from_name('fresh_butter')}")
 print(f"Testing for benzene: \n {conv.overall_conversion_from_name('Benzene')}")
 print(f"Testing for propanol: \n {conv.overall_conversion_from_name('Propan-2-ol')}")
 print(f"Testing for butanol: \n {conv.overall_conversion_from_name('Butan-1-ol', 2000, 'But-1-ol.SDF', 'But-1-ol.xyz')}")
-print(f"Testing for ferrocene: \n {conv.overall_conversion_from_name('Dicyclopentadienyliron')}")
-print(f"Testing for cisplatin: \n {conv.overall_conversion_from_name('cis-diamminedichloroplatinum(II)')}")
-print(f"Testing for uranium hexafluoride: \n {conv.overall_conversion_from_name('Uranium hexafluoride', 25)}")
+#print(f"Testing for ferrocene: \n {conv.overall_conversion_from_name('Dicyclopentadienyliron')}")
+#print(f"Testing for cisplatin: \n {conv.overall_conversion_from_name('cis-diamminedichloroplatinum(II)')}")
+#print(f"Testing for uranium hexafluoride: \n {conv.overall_conversion_from_name('Uranium hexafluoride', 25)}")
 print(f"Testing for 1,3,5 heptatriene: \n {conv.overall_conversion_from_name('Hepta-1,3,5-triene')}")
-print(f"Testing for aspirin: \n {conv.overall_conversion_from_name('Aspirin', filename_1='ASPIRIN.sdf')}")
-print(f"Testing for porphyrin: \n {conv.overall_conversion_from_name('Porphyrin', filename_1='Porphyrin.sdf')}")
+print(f"Testing for aspirin: \n {conv.overall_conversion_from_name('Aspirin', filename_1='ASPIRIN.SDF')}")
+print(f"Testing for porphyrin: \n {conv.overall_conversion_from_name('Porphyrin', filename_1='Porphyrin.SDF')}")
