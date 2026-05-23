@@ -12,9 +12,8 @@ st.set_page_config(
     initial_sidebar_state="collapsed",)
 st.logo("assets/epfl-logo.svg", size="large" , link="https://www.epfl.ch/en/", icon_image=None,)
     
-st.title(" Molecular symmetry app")
-st.subheader("Welcome in our molecular symetry app ")
-st.markdown("## Welcome in our molecular symetry app ")
+st.title(" ACEsymmetry app")
+st.subheader("Welcome in our ACEsymmetry app ")
 st.write("This app is an interactive application developed at EPFL for the Practical programming in Chemistry. etc. ")
 st.text("This app allows users to: - analyse molecular symmetry")
 col1, col2, col3 = st.columns([1,5,2])
