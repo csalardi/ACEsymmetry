@@ -16,9 +16,9 @@ Tool for the visualisation of symmetry elements of molecules
 
 [Alexis Vayron (@AVayron)](https://github.com/AVayron) -- alexis.vayrondelamoureyre@epfl.ch  
 [Cyrielle Salardi--Brahy (@csalardi)](https://github.com/csalardi) -- cyrielle.salardi-brahy@epfl.ch  
-[Elodie Scherz (@escherz)](https://github.com/escherz)  
+[Elodie Scherz (@escherz)](https://github.com/escherz) -- elodie.scherz@epfl.ch  
 
-## 🔥 Moduls and main functionnalities
+## 🔥 Modules and main functionnalities
 
 The acesymmetry package contains two modules.
 

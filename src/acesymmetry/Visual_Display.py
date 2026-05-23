@@ -2,6 +2,7 @@ import pointgroup as pg
 import numpy as np
 from pathlib import Path
 import matplotlib.pyplot as plt
+#import py3Dmol
 from acesymmetry import Symmetry_Elements_Dico
 
 def get_symmetry_set(point_group:str)->set:
@@ -66,6 +67,20 @@ def get_inversion_centre(xyz_file_name:str):
     else:
         print("The molecule contains no inversion center")
         return None
-    
-def display():
-    pass
+
+
+
+'''
+def display(sdf_file_name:str, format=None):
+    sdf_file:Path=Path.cwd()/sdf_file_name
+    if format == None:
+            format=py3Dmol.view(width=480, height=480)
+    with sdf_file.open("r") as file:
+        mol=str(file)
+    format.removeAllModels()
+    format.addModel(mol,'sdf')
+    format.setStyle({'sphere':{'scale':1.5}})
+    format.setBackgroudColor('white')
+    format.zoomTo()
+    return format.render()
+'''   
