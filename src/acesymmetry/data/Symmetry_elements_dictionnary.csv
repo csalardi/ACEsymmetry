@@ -46,4 +46,4 @@ Oh;E;4 C3;6 C2;3 C4;i;3 Sigma_h;6 Sigma_d;
 I;E;6 C5;10 C3;15 C2;;;;
 Ih;E;6 C5;10 C3;15 C2;i;15 Sigma;;
 Cinfv;E;Cinf;inf Sigma_v;;;;;
-Dinfv;E;Cinf;i;inf Sigma_v;Sinf;inf C2';;
+Dinfh;E;Cinf;i;inf Sigma_v;Sinf;inf C2';;
