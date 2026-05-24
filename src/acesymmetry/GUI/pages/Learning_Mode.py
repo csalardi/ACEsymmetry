@@ -5,14 +5,14 @@ import streamlit as st
 import streamlit_ketcher as stk
 import pubchempy as pc
 import pointgroup as pg
-
+from pathlib import Path
 st.set_page_config(
     page_title="ACEsymmetry App",
     page_icon="",
     layout="wide",
     initial_sidebar_state="collapsed"
 )
-st.logo("assets/epfl-logo.svg", size="large" , link="https://www.epfl.ch/en/", icon_image=None,)
+st.logo(Path(__file__).parent.parent/"assets/epfl-logo.svg", size="large" , link="https://www.epfl.ch/en/", icon_image=None,)
 st.title(" ACEsymmetry app")
 st.subheader("Learning mode")
 if "current" not in st.session_state:
@@ -31,7 +31,7 @@ def flowchart_page():
     with col11: 
         st.write("A molecule point group can be determined by folling this flowchart :")
         st.write("This learning mode follows the steps in the flowchart and checks your answer after each question until you find the correct group point. ")
-    col12.image("assets/Flowchart.png")
+    col12.image(Path(__file__).parent.parent/"assets/Flowchart.png")
     if col23.button("Next →"):
         next_page(True, True)
     if col21.button("← Previous"):
@@ -82,14 +82,18 @@ def Molecule_notation_page():
 def name_files_page():
     col21, col22 = st.columns([5, 5])
     col21.write("Two 3D structure files will be generated and saved on your computer.")
-    Y_or_No_name_files = col21.radio("Would you like to rename them or keep the default names ?", ("Rename the files", "Keep the default names"), help= "The default name of your files are IUPAC.xyz and IUPAC.SDF.")
+    Y_or_No_name_files = col21.radio("Would you like to rename them or keep the default names ?", ("Rename the files", "Keep the default names"), index=None, help= "The default name of your files are IUPAC.xyz and IUPAC.SDF.")
     st.session_state.name_xyz_files = "default"
     st.session_state.name_SDF_files = "default"
     if Y_or_No_name_files == "Rename the files": 
-        col22.write("Special characters and space are not allowed except underscores (_) and hyphens (-).")
-        st.session_state.name_xyz_files = col22.text_input("Enter the name of your xyz file.")
-        st.session_state.name_SDF_files = col22.text_input("Enter the name of your SDF file.")
-        submitted = st.button("Next →")
+        with col22:
+            with st.form("files_name", enter_to_submit=True):
+                st.write("Special characters and space are not allowed except underscores (_) and hyphens (-).")
+                name_xyz_files = st.text_input("Enter the name of your xyz file.")
+                name_SDF_file = st.text_input("Enter the name of your SDF file.")
+                st.session_state.name_xyz_files = name_xyz_files + ".xyz" 
+                st.session_state.name_SDF_files = name_SDF_file + ".SDF"
+                submitted = st.form_submit_button("Next →")
     else : 
         submitted = st.button("Next →")
     previous_page()
@@ -318,6 +322,7 @@ def Questions_page() :
     i = "Incorrect !"
     xyz_file_name = None
     response = None
+    col1, col2, col3,= st.columns([3,3,1])
     if st.session_state.molecule_name :
         try:
             st.session_state.number_of_conformer = 1000
@@ -327,7 +332,7 @@ def Questions_page() :
             point_group=pg.PointGroup(symbols=Symbols, positions=Positions).get_point_group()
             Symmetry_Elements=vd.get_symmetry_set(point_group)
             image = vd.display(xyz_file_name)
-            st.image(image)
+            col2.image(image)
             response = st.radio("Is your molecule linear ?", ("Yes", "No"), index=None, horizontal= True)
             if response: 
                 if response == check_linearity(point_group):

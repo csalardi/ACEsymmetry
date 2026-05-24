@@ -2,7 +2,7 @@ import streamlit as st
 import streamlit_ketcher as stk
 import pubchempy as pc
 import pointgroup as pg
-
+from pathlib import Path
 from acesymmetry import Visual_Display as vd, Format_Conversion as conv
 
 st.set_page_config(
@@ -10,7 +10,7 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="collapsed"
 )
-st.logo("assets/epfl-logo.svg", size="large" , link="https://www.epfl.ch/en/", icon_image=None,)
+st.logo(Path(__file__).parent.parent/"assets/epfl-logo.svg", size="large" , link="https://www.epfl.ch/en/", icon_image=None,)
 st.title(" Welcome to ACEsymmetry app")
 def previous_page():
     if st.button("← Previous"):
@@ -54,28 +54,26 @@ def Molecule_notation_page():
                         st.error("Sorry, your molecule is unknown. Please check if your molecule is spelled correctly. ")  
     elif SMILES_or_IUPAC == "Draw the molecule":
         with col12:
-            molecule_name = stk.st_ketcher()
+            molecule_name = stk.st_ketcher() #SMILES
             if molecule_name:
                 try:
                     molecule_info = pc.get_compounds(molecule_name, "smiles")[0]
                     IUPAC_molecule_name = molecule_info.iupac_name
-
                     molecule_name1 = conv.smiles_from_name(IUPAC_molecule_name)
                     st.session_state.molecule_name = molecule_name1
                     with st.form("Drawing", enter_to_submit=True):
                         st.write("The molecule you drew corresponds to", IUPAC_molecule_name,".")
-                        
-                        submitted = st.form_submit_button("Next")
-                        next_page(submitted, st.session_state.molecule_name)
+                        submitted = st.form_submit_button("Next →")
                 except:
                     st.error("The molecule you draw is not valid ! Sorry", icon= "🚨")
+        next_page(submitted, st.session_state.molecule_name)
     previous_page()
 
 def nb_conformer_choice_page():
     submitted = None
     col11, col12 = st.columns([1, 2])
     col21, col22, col23 = st.columns([1, 2,0.5])
-    Y_or_N_conformer = col11.radio("Do you want to choose the number of conformers generated in the computations?", ("Yes", "No"), index=None, horizontal=True, help="The default number is 1000 conformers. The more conformers are generetad accurate the result, but the longer the running time of the programm.")
+    Y_or_N_conformer = col11.radio("Do you want to choose the number of conformers generated in the computations?", ("Yes", "No"), index=None, horizontal=True, help="The default number is 1000 conformers. The more conformers are generetad, the more accurate the result, but the longer the running time of the programm.")
     st.session_state.number_of_conformer = None
     if Y_or_N_conformer == "Yes":
         st.session_state.number_of_conformer = col12.slider("Number of conformer",1,10000)
@@ -88,18 +86,20 @@ def nb_conformer_choice_page():
     next_page(submitted, st.session_state.number_of_conformer)
 
 def name_files_page():
-    col21, col22 = st.columns([5, 5])
+    col21, col22 = st.columns([4.5, 5])
     col21.write("Two 3D structure files will be generated and saved on your computer.")
     Y_or_No_name_files = col21.radio("Would you like to rename them or keep the default names ?", ("Rename the files", "Keep the default names"), index=None, help= "The default name of your files are IUPAC.xyz and IUPAC.SDF.")
     st.session_state.name_xyz_files = "default"
     st.session_state.name_SDF_files = "default"
     if Y_or_No_name_files == "Rename the files": 
-        col22.write("Special characters and space are not allowed except underscores (_) and hyphens (-).")
-        name_xyz_files = col22.text_input("Enter the name of your xyz file.")
-        name_SDF_file = col22.text_input("Enter the name of your SDF file.")
-        st.session_state.name_xyz_files = name_files_page + ".xyz" 
-        st.session_state.name_SDF_files = name_SDF_file + ".SDF"
-        submitted = st.button("Next →")
+        with col22:
+            with st.form("files_name", enter_to_submit=True):
+                st.write("Special characters and space are not allowed except underscores (_) and hyphens (-).")
+                name_xyz_files = st.text_input("Enter the name of your xyz file.")
+                name_SDF_file = st.text_input("Enter the name of your SDF file.")
+                st.session_state.name_xyz_files = name_xyz_files + ".xyz" 
+                st.session_state.name_SDF_files = name_SDF_file + ".SDF"
+                submitted = st.form_submit_button("Next →")
     else : 
         submitted = st.button("Next →")
     if st.button("← Previous"):

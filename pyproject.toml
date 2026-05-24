@@ -16,6 +16,7 @@ dependencies = [
     "numpy",
     "pubchempy",
     "xyzrender",
+    "typer",
 ]
 authors = [
     {name = "Cyrielle Salardi--Brahy", email = "cyrielle.salardi-brahy@epfl.ch"}
@@ -45,7 +46,6 @@ test = [
     "pytest-cov",
     "tox",
     "genbadge[coverage]",
-    "typer",
 ]
 doc = [
     "furo",
