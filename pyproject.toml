@@ -18,9 +18,7 @@ dependencies = [
     "xyzrender",
 ]
 authors = [
-    {name = "Cyrielle Salardi--Brahy", email = "cyrielle.salardi-brahy@epfl.ch"},
-    {name = "Elodie Scherz", email = "elodie.scherz@epfl.ch"},
-    {name = "Alexis Vayron", email = "alexis.vayrondelamoureyre@epfl.ch}
+    {name = "Cyrielle Salardi--Brahy", email = "cyrielle.salardi-brahy@epfl.ch"}
 ]
 classifiers = [
     "Development Status :: 3 - Alpha",
