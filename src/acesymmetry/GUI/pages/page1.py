@@ -2,7 +2,6 @@ import streamlit as st
 import streamlit_ketcher as stk
 import pubchempy as pc
 import pointgroup as pg
-import time
 
 from acesymmetry import Visual_Display as vd, Format_Conversion as conv
 
@@ -15,7 +14,6 @@ st.set_page_config(
 st.logo("assets/epfl-logo.svg", size="large" , link="https://www.epfl.ch/en/", icon_image=None,)
 st.title(" Molecular symetry app")
 st.markdown("## Welcome")
-
 def previous_page():
     if st.button("← Previous", disabled=st.session_state.current == 0):
         st.session_state.current -= 1
@@ -38,17 +36,24 @@ def Molecule_notation_page():
         with col12:
             with st.form("smiles", enter_to_submit=True):
                 molecule_name = st.text_input("Enter the SMILES of your molecule")
+                st.session_state.molecule_name = molecule_name
                 submitted = st.form_submit_button("Submit")
+                next_page(submitted, st.session_state.molecule_name)
     elif SMILES_or_IUPAC == "IUPAC name":
         with col12:
             with st.form("IUPAC", enter_to_submit=True):
                 IUPAC_molecule_name = st.text_input("Write the IUPAC name of your molecule.")
                 submitted = st.form_submit_button("Submit")
                 if submitted : 
-                    molecule_name = conv.smiles_from_name(IUPAC_molecule_name)
-                    if molecule_name is None:
-                        st.error("The IUPAC name of your molecule is invalid, try again !", icon = "❌")
-                      
+                    try:
+                        molecule_name = conv.smiles_from_name(IUPAC_molecule_name)
+                        if molecule_name is None:
+                            st.error("The IUPAC name of your molecule is invalid, try again !", icon = "❌")
+                        else : 
+                            st.session_state.molecule_name = molecule_name
+                            next_page(submitted, st.session_state.molecule_name)  
+                    except ImportError : 
+                        st.error("Sorry, your molecule is unknown. Please check if your molecule is spelled correctly. ")  
     elif SMILES_or_IUPAC == "Draw your molecule":
         st.set_page_config(initial_sidebar_state="collapsed")
         with col12:
@@ -57,25 +62,28 @@ def Molecule_notation_page():
                 try:
                     molecule_info = pc.get_compounds(molecule_name, "smiles")[0]
                     IUPAC_molecule_name = molecule_info.iupac_name
+                    st.session_state.molecule_name = molecule_name
                     with st.form("Drawing", enter_to_submit=True):
                         st.write("The molecule you drew corresponds to", IUPAC_molecule_name,".")
                         submitted = st.form_submit_button("Next")
+                        next_page(submitted, st.session_state.molecule_name)
                 except:
                     st.error("The molecule you draw is not valid ! Sorry", icon= "🚨")
-    st.session_state.molecule_name = molecule_name
-    next_page(submitted, st.session_state.molecule_name)
     previous_page()
 
 def nb_conformer_choice_page():
-    col21, col22 = st.columns([1, 2])
-    Y_or_N_conformer = col21.radio("Do you want to choose the number of conformer?", ("Yes", "No"), index=None, help="The default number is 1000 conformers.")
+    submitted = None
+    col11, col12 = st.columns([1, 2])
+    col21, col22, col23 = st.columns([1, 2,0.5])
+    Y_or_N_conformer = col11.radio("Do you want to choose the number of conformers generated in the computations?", ("Yes", "No"), index=None, horizontal=True, help="The default number is 1000 conformers. The more conformers are generetad accurate the result, but the longer the running time of the programm.")
     st.session_state.number_of_conformer = None
     if Y_or_N_conformer == "Yes":
-            st.session_state.number_of_conformer = col22.slider("Number of conformer",1,10000)
-            submitted = col22.button("Submit")
-    else : 
-        st.session_state.number_of_conformer = 1000
-        submitted = col21.button("Next →")
+        st.session_state.number_of_conformer = col12.slider("Number of conformer",1,10000)
+        submitted = col23.button("Submit")
+    elif Y_or_N_conformer == "No":
+            st.session_state.number_of_conformer = 1000
+            submitted = col22.button("Next →")
+    
     previous_page()
     next_page(submitted, st.session_state.number_of_conformer)
 
@@ -92,6 +100,7 @@ def name_files_page():
         submitted = st.button("Next →")
     else : 
         submitted = st.button("Next →")
+    previous_page()
     next_page(submitted, st.session_state.name_SDF_files)
 def point_group_page() : 
     SDF_file_name = None
