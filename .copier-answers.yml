@@ -4,6 +4,6 @@ _src_path: https://github.com/schwallergroup/copier-liac-minimal
 author_email: cyrielle.salardi-brahy@epfl.ch
 author_name: Cyrielle Salardi--Brahy
 github_org: csalardi
-package_name: ace_symmetry
+package_name: acesymmetry
 project_name: ACEsymmetry
 short_description: Tool for the visualisation of symmetry elements of molecules

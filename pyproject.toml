@@ -7,18 +7,20 @@ name = "ACEsymmetry"
 readme = "README.md"
 requires-python = ">=3.10"
 license = {file = "LICENSE"}
-description = "Tool for the visualisation of symmetry elements of molecules"
+description = "Interactive application for the determination of the symmetry elements in a molecule."
 dependencies = [
     "rdkit",
     "streamlit",
     "streamlit_ketcher",
     "pointgroup",
     "numpy",
-    "matplotlib",
-    "pubchempy"
+    "pubchempy",
+    "xyzrender"
 ]
 authors = [
     {name = "Cyrielle Salardi--Brahy", email = "cyrielle.salardi-brahy@epfl.ch"}
+    {name = "Elodie Scherz", email = "elodie.scherz@epfl.ch"}
+    {name = "Alexis Vayron", email = "alexis.vayrondelamoureyre@epfl.ch}
 ]
 classifiers = [
     "Development Status :: 3 - Alpha",
@@ -45,6 +47,7 @@ test = [
     "pytest-cov",
     "tox",
     "genbadge[coverage]",
+    "typer",
 ]
 doc = [
     "furo",
