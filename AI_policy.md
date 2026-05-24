@@ -1,11 +1,11 @@
-AI statement:
+## AI statement:
 
-Cyrielle
+### Cyrielle
 
 The present disclosure testify that no AI tools were used by my part in the realisation of this project.
 
 
-Alexis
+### Alexis
 
 In this project, AI was used as a particular assistant, but never for pure code generation. Therefore, all the program corresponding to the conversion of the SMILES to the xyz can be considered as written by the programmist, despite the assistance.
 

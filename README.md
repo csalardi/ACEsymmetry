@@ -71,6 +71,7 @@ The following dependencies are essential for the functionning of the acesymmetry
 [**numpy**](https://numpy.org/)  
 [**matplotlib**](https://matplotlib.org/)  
 [**pubchempy**](https://docs.pubchempy.org/en/latest/)  
+[**xyzrender**](https://github.com/aligfellow/xyzrender)
 
 ## Optional dependencies
 
