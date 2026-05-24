@@ -2,10 +2,8 @@
     <img alt="♠" src=https://github.com/csalardi/ACEsymmetry/blob/main/assets/Logo_ACEsymmetry.png>
 </p>
 
-<div align="center">
 ![Coverage Status](assets/coverage-badge.svg)
 [![License](https://img.shields.io/github/license/csalardi/ACEsymmetry)](https://github.com/csalardi/ACEsymmetry/blob/main/LICENSE)
-</div>
 
 <h1 align="center">
 ACEsymmetry
@@ -14,6 +12,7 @@ ACEsymmetry
 <br>
 
 Interactive application for the determination of the symmetry elements in a molecule.
+
 
 ## Table of Contents
 
@@ -28,11 +27,13 @@ Interactive application for the determination of the symmetry elements in a mole
 - [Acknowledgement](#acknowledgements)
 - [Contributions](#contributions)
 
+
 ## Authors
 
 [Alexis Vayron (@AVayron)](https://github.com/AVayron) -- alexis.vayrondelamoureyre@epfl.ch  
 [Cyrielle Salardi--Brahy (@csalardi)](https://github.com/csalardi) -- cyrielle.salardi-brahy@epfl.ch  
 [Elodie Scherz (@escherz)](https://github.com/escherz) -- elodie.scherz@epfl.ch  
+
 
 ## 🔥 Modules and main functionnalities
 
@@ -93,21 +94,59 @@ vd.display(xyz_file_name) # To generate a .png representation of the molecule fr
 
 The get_barycentre() function fall within the intention of building a broader tool that would display the symmetry elements of molecule onto its representation. However, due to time constraints this will be part of further development and is not included in the first version of the acesymmetry package.
 
+
 ## ACEsymmetry application
 
 The package also contains an application which is its main feature as it uses all the coded functionnalities to give an interactive experience of molecular symmetry exploration.
 
-The application may be started by using the following command in the terminal in the folder containing the Interface.py file:
+The application may be started by using the following command in the terminal:
 
 ```
 streamlit run Interface.py
 ```
 
-A more convient way of launching the application is being developed but is currently only working from within the copy of the repository, either at its root or in the GUI folder. This require an optional depedency to work; typer, and to run the following command in the terminal:
+A more convient way of launching the application has been developed. This require an optional depedency to work; typer, and to run the following command in the terminal:
 
 ```
 acesymmetry_app
 ```
+
+Once the application launch, a new window will open on your browser. Note that because of the use of the pubchempy library, an internet connection is needed for a proper run of the whole script.
+
+<p align="center">
+    <img src=https://github.com/csalardi/ACEsymmetry/blob/main/assets/Homepage.png>
+</p>
+
+The first think you will see is the homepage, were you can select either *Point Group* for the determination of the symmetry elements of a molecule by the programm or *Learning mode* to train yourself in point group determination by following a decisional flowchart.
+
+<p align="center">
+    <img src=https://github.com/csalardi/ACEsymmetry/blob/main/assets/Input.png>
+</p>
+
+In *Point Group* several input formats are supported. (Name, SMILES, Drawing) Make your choice !
+
+<p align="center">
+    <img src=https://github.com/csalardi/ACEsymmetry/blob/main/assets/Conformer.png>
+</p>
+
+You can choose the number of conformer that will be generated in the computation. This is both link to result accuray and calculation time !
+
+<p align="center">
+    <img src=https://github.com/csalardi/ACEsymmetry/blob/main/assets/File_names.png>
+</p>*
+
+You can fully choose how to name the generated files. You can also choose the keep the default setting of naming the files with the IUPAC name of the molecule.
+
+Note that the files will generate in the folder were you launched the application.
+
+<p align="center">
+    <img src=https://github.com/csalardi/ACEsymmetry/blob/main/assets/Output.png>
+</p>
+
+The output displays a visual representation of the molecule as well as its point group and the symmetry elements it contains.
+
+To close the application, it is both necessary to close the window of ypur browser and cancel the launch command in the interface with ctrl + C.
+
 
 ## 👩‍💻 Installation of the package
 
@@ -119,24 +158,24 @@ conda create -n ace_symmetry python=3.10
 
 ```
 conda activate ace_symmetry
-(ace_symmetry) $ pip install https://github.com/csalardi/ACEsymmetry
+(ace_symmetry) $ pip install git+https://github.com/csalardi/ACEsymmetry.git
 ```
 
-If you prefere to use the short cut command to launch the application make sure to install the optional dependency typer:
-
-```
-(ace_symmetry) $ pip install typer
-```
-
-As this package is optional, the installation must be performed manually.
 
 ## 🛠️ Development installation
 
 To install the package while being able to edit the code, you can install it with the -e flag. To do so, a local clone of the repository may be created and once in the folder corresponding to the repository run the following command: 
 
 ```
+$ git clone https://github.com/csalardi/ACEsymmetry.git
+
+conda create -n ace_symmetry python=3.10
+conda activate ace_symmetry
+
+(ace_symmetry) $ cd ACEsymmetry
 (ace_symmetry) $ pip install -e .
 ```
+
 
 ## Key dependencies
 
@@ -146,27 +185,33 @@ The following dependencies are essential for the functionning of the acesymmetry
 (ace_symmetry) $ conda list | grep <package_name>
 ```
 
-[**rdkit**](https://www.rdkit.org/)  
-[**streamlit**](https://streamlit.io/)  
-[**streamlit_ketcher**](https://github.com/streamlit/streamlit-ketcher)  
-[**pointgroup**](https://github.com/abelcarreras/pointgroup)  
-[**numpy**](https://numpy.org/)  
-[**pubchempy**](https://docs.pubchempy.org/en/latest/)  
-[**xyzrender**](https://github.com/aligfellow/xyzrender)
+- [**rdkit**](https://www.rdkit.org/)  
+- [**streamlit**](https://streamlit.io/)  
+- [**streamlit_ketcher**](https://github.com/streamlit/streamlit-ketcher)  
+- [**pointgroup**](https://github.com/abelcarreras/pointgroup)  
+- [**numpy**](https://numpy.org/)  
+- [**pubchempy**](https://docs.pubchempy.org/en/latest/)  
+- [**xyzrender**](https://github.com/aligfellow/xyzrender)  
+- [**typer**](https://typer.tiangolo.com/) 
+
+If one dependencie is missing you can install it with the command:
+
+```
+(ace_symmetry) $ pip install <missing_package>
+```
+
+Amoung the dependencies of this packege is typer. This enables you to launch the ACEsymmetry application from wherever on your computer as long as the ace_symmetry environment is activated. With typer, you only need to enter acesymmetry_app in your terminal and it will automatically launch the application.
+
 
 ## Optional dependencies
 
-[**typer**](https://typer.tiangolo.com/)  
-[**tox**](https://python-basics-tutorial.readthedocs.io/en/latest/test/tox.html)  
+- [**tox**](https://python-basics-tutorial.readthedocs.io/en/latest/test/tox.html)  
 
-Amoung the optional dependencies of this package is typer. This package may be added to the environement if you prefer to be able to launch the acesymmetry app from wherever on your computer as long as the ace_symmetry environment is activated.
-With typer you only need to enter acesymmetry_app in your terminal and it will automatically launch the application.
-
-Nota: This currently is not fully supported. You need to be in the cloned folder to launch the application. This is due to unresolved path management issues that are yet to be corrected.
 
 ## License
 
 [MIT](LICENSE)
+
 
 ## Acknowledgements
 
@@ -174,13 +219,14 @@ The ACEsymmetry package is built around the pointgroup package by Abel Carreras:
 
 The logo of the project as been drawn by Katherine Rimmer.
 
+
 ## Contributions
 
 Alexis: Jupiter Notebook Report, Format_Conversion module and its test file, learning mode functions  
 
 Cyrielle: README, Visual_Display module and its test file, Package structure, pyproject.toml and cli, source dictionnary for the get_symmetry_set () function 
- 
-Elodie: Complete GUI with streamlit 
+
+Elodie: Complete GUI with streamlit, full interface containing the three pages
 
 
 
