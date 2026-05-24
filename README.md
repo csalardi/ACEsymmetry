@@ -240,14 +240,14 @@ Elodie: Complete GUI with streamlit, full interface containing the three pages, 
 ## ? FAQ ?
 
 The drawing interface is croped of the right, what do I do ?  
-The drawing interface infortunatly slides on the right when the side panel is open. To correct that simply close the sidebar.
+The drawing interface infortunatly slides on the right when the side panel is open. To correct that simply close the sidebar.  
 
 How can I go back to the homepage when in the application ?  
 The tab "Interface" corresponds to the homepage. 
 
-I cannot travel to the first page of the other mode when I am in Point Group or in Learning Mode, what can I do ?
-To correct that go to the homepage first and then select the mode of your choosing.
+I cannot travel to the first page of the other mode when I am in Point Group or in Learning Mode, what can I do ?  
+To correct that go to the homepage first and then select the mode of your choosing.  
 
 I would like to explore a bit more what are the actualities of your university.  
-The EPFL logo on the top left-hand-side corner of the application makes you travel to the main page of the site of our university.
+The EPFL logo on the top left-hand-side corner of the application makes you travel to the main page of the site of our university.  
 
