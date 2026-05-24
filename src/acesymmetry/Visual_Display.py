@@ -1,8 +1,7 @@
 import pointgroup as pg
 import numpy as np
-from pathlib import Path
-import matplotlib.pyplot as plt
 import xyzrender
+from pathlib import Path
 from acesymmetry import Symmetry_Elements_Dico
 
 def get_symmetry_set(point_group:str)->set:
@@ -36,6 +35,7 @@ def read_xyz_file(xyz_file_name:str):
     xyz_file:Path=Path.cwd()/xyz_file_name
     Elements:list=[]
     Coords=[]
+
     with xyz_file.open('r') as file:
         table=file.readlines()
         for row in table:
@@ -47,9 +47,30 @@ def read_xyz_file(xyz_file_name:str):
                 Vector.append(float(column))
             Coords.append(Vector)
     Coordinates=np.asarray(Coords)
+
     return (Elements,Coordinates)
 
+
+def get_barycentre(xyz_file_name:str)->list:
+    '''
+    Find the coordinates of the center of mass of the molecule.
+    And creates a xyz file containing the computed coordinates.
+
+    :param xyz_file: the xyz file of the studied molecule
+    :type xyz_file: str 
+
+    :return barycentre (list): the centre of mass of the molecule.
+    '''
+    Symbols:list=read_xyz_file(xyz_file_name)[0]
+    Positions=read_xyz_file(xyz_file_name)[1]
+    barycentre:list=pg.tools.get_center_mass(symbols=Symbols, coordinates=Positions)
+    coords_file:str=xyz_file_name[:-4]+"_barycentre.xyz"
+    with open(coords_file,"w") as file:
+        file.write(f"1 \nCentre of mass: {xyz_file_name[:-4]} \nG      {barycentre[0]}   {barycentre[1]}   {barycentre[2]}")
     
+    return barycentre
+
+
 def get_inversion_centre(xyz_file_name:str):
     '''
     Find the coordinates of the inversion centre i of the molecule.
@@ -59,28 +80,48 @@ def get_inversion_centre(xyz_file_name:str):
 
     :return Inversion_center (NDArray[float]): the coordinates of the inversion centre i
     '''
-    Symbols=read_xyz_file(xyz_file_name)[0]
+    Symbols:list=read_xyz_file(xyz_file_name)[0]
     Positions=read_xyz_file(xyz_file_name)[1]
-    point_group=pg.PointGroup(symbols=Symbols, positions=Positions).get_point_group()
-    Symmetry_Elements=get_symmetry_set(point_group)
+    point_group:str=pg.PointGroup(symbols=Symbols, positions=Positions).get_point_group()
+    Symmetry_Elements:set=get_symmetry_set(point_group)
     if 'i' in Symmetry_Elements:
-        i=pg.tools.get_center_mass(symbols=Symbols, coordinates=Positions)
+        i=get_barycentre(xyz_file_name)
         return i
     else:
-        print("The molecule contains no inversion center")
+        print(f"{xyz_file_name[:-4]} contains no inversion center")
         return None
     
 
-def display(sdf_file_name:str, image:str="default"):
+def display(xyz_file_name:str, image:str="default"):
     '''
-    Create the visual representation of the molecule with the xyzrender package. (Either .png, .svg, .pdf)
+    Create the visual representation of the molecule. Function only working for the conversion .xyz to .png.
 
-    :param sdf_file_name: the SDF file of the studied molecule.
+    :param sdf_file_name: the xyz file of the studied molecule.
     :type sdf_file_name: str
     :param image: the name and extension of the output file, by default .png named the same as the sdf_file.
     :type image: str
     '''
-    molecule=xyzrender.load(sdf_file_name)
     if image=="default":
-        image=sdf_file_name[:-3]+"png"    
-    xyzrender.render(molecule, output=image)
+        image=xyz_file_name[:-3]+"png"
+    xyz_file:Path=Path.cwd()/xyz_file_name
+    molecule=xyzrender.load(xyz_file)
+    xyzrender.render(molecule, output=image, hy=True, config="Pmol", idx="s")
+
+
+def display_with_mass_centre(xyz_file_name:str, image:str="default"):
+    '''
+    Functionnality not yet working: the overlay of the barycentre raises an error from xyzrender.
+    Either "unknown element symbol" as the center of mass is referenced as G in the xyz_file.
+    Or "no common substructure" when G is replaced by H to bypass the previous error.
+
+    :param sdf_file_name: the xyz file of the studied molecule.
+    :type sdf_file_name: str
+    :param image: the name and extension of the output file, by default .png named the same as the sdf_file.
+    :type image: str
+    '''
+    if image=="default":
+        image=xyz_file_name[:-4]+"_with_mas_centre.png"
+    get_barycentre(xyz_file_name)
+    xyz_file:Path=Path.cwd()/xyz_file_name
+    molecule=xyzrender.load(xyz_file)
+    xyzrender.render(molecule, output=image, hy=True, config="Pmol", idx="s", overlay=xyz_file_name[:-4]+"_barycentre.xyz", overlay_color="#bf0000")
