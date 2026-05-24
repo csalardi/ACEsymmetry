@@ -322,6 +322,7 @@ def Questions_page() :
     i = "Incorrect !"
     xyz_file_name = None
     response = None
+    col1, col2, col3,= st.columns([3,3,1])
     if st.session_state.molecule_name :
         try:
             st.session_state.number_of_conformer = 1000
@@ -331,7 +332,7 @@ def Questions_page() :
             point_group=pg.PointGroup(symbols=Symbols, positions=Positions).get_point_group()
             Symmetry_Elements=vd.get_symmetry_set(point_group)
             image = vd.display(xyz_file_name)
-            st.image(image)
+            col2.image(image)
             response = st.radio("Is your molecule linear ?", ("Yes", "No"), index=None, horizontal= True)
             if response: 
                 if response == check_linearity(point_group):
