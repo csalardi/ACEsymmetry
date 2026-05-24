@@ -19,6 +19,9 @@ print(f"Point group D2h contains the following symmetry elements: {vd.get_symmet
 
 print(f"The elements contained in methane are: {vd.read_xyz_file('methane.xyz')[0]} \n The positions of the mentionned atoms are: \n{vd.read_xyz_file('methane.xyz')[1]}")
 
+print(f"The symmetry elements in a molecule of methane are: \n {vd.get_labels('methane.xyz')}")
+print(f"The symmetry elements in a molecule of benzene are: \n {vd.get_labels('benzene.xyz')}")
+
 print(f"Le barycenter of methane was computed to be at coordinates: {vd.get_barycentre('methane.xyz')}")
 
 print(f'The center of inversion has for coordinates: \n {vd.get_inversion_centre("C1.xyz")}')

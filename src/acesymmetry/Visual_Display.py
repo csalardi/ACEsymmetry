@@ -51,6 +51,23 @@ def read_xyz_file(xyz_file_name:str):
     return (Elements,Coordinates)
 
 
+def get_labels(xyz_file_name:str)->set:
+    '''
+    Gets the set of symmetry elements' labels from the xyz file of the molecule.
+
+    :param xyz_file_name: Name of the xyz file of the molecule
+    :type xyz_file_name: str
+
+    :return Labels (set): the set containing the symmetry elements labels.
+    '''
+    Symbols:list=read_xyz_file(xyz_file_name)[0]
+    Positions=read_xyz_file(xyz_file_name)[1]
+    Point_group:str=pg.PointGroup(symbols=Symbols, positions=Positions).get_point_group()
+    Labels:set=get_symmetry_set(Point_group)
+
+    return Labels
+
+
 def get_barycentre(xyz_file_name:str)->list:
     '''
     Find the coordinates of the center of mass of the molecule.
@@ -108,6 +125,7 @@ def display(xyz_file_name:str, image:str="default")->str:
     xyz_file:Path=Path.cwd()/xyz_file_name
     molecule=xyzrender.load(xyz_file)
     xyzrender.render(molecule, output=image, hy=True, config="Pmol", idx="s")
+
     return image
 
 
