@@ -178,25 +178,29 @@ def check_main_axis_multiplicity(point_group:str)->str:
     else:
         return "No"
 
-def check_rotation_axis(symmetry_list:list[str])->Union[tuple[str, int], str]:
+def check_rotation_axis(symmetry_list:list[str])->tuple[str, int]:
     '''
     Checks the presence of rotation axis in the molecule
 
-    :param None
-    :type None
+    :param symmetry_list
+    :type list of strings
 
     :return "Yes" (str) if the molecule has rotation axis
     :return "No" (str) if not
     '''
-    n_max:int = 0
+    n_max = 0
+
     for element in symmetry_list:
-        if element.startswith("C"):
+        _, label = parse_symmetry_element(element)
+
+        if label.startswith("C"):
             try:
-                n = int(element[1:])
+                n = int(label[1:])
                 if n > n_max:
                     n_max = n
             except ValueError:
                 pass
+
     if n_max > 0:
         return ("Yes", n_max)
     else:
@@ -244,11 +248,13 @@ def check_dihedral_plane(symmetry_set:set[str])->str:
     else:
         return "No"
 
-def check_improper_rotation_axis(symmetry_list:list[str], n_ref:int)->str:
+def check_improper_rotation_axis(symmetry_list:list[str], n:int)->str:
     '''
-    Checks the presence of improper rotation axes with order 2n_ref
+    Checks the presence of improper rotation axes with order 2n_ref for molecules with Cn axis
     :param symmetry_set
     :type set of strings
+    :param n 
+    :type int
 
     :return "Yes" (str) if the molecule has improper rotation axes with order 2n_ref
     :return "No" (str) if not
@@ -261,7 +267,7 @@ def check_improper_rotation_axis(symmetry_list:list[str], n_ref:int)->str:
 
 def check_icosahedral_symmetry(point_group:str)->str:
     '''
-    Checks the presence of C5 to distinguish Oh and Ih
+    Checks wether the molecule is icosahedral
     :param point_group
     :type str
 
