@@ -207,7 +207,7 @@ Amoung the dependencies of this package is typer. This enables you to launch the
 
 - [**tox**](https://python-basics-tutorial.readthedocs.io/en/latest/test/tox.html)  
 
-Tox is on optional dependency for automatic testing of the package. It is not required for the present packege to be running.
+Tox is on optional dependency for automatic testing of the package. It is not required for the present package to be running.
 
 
 ## License
