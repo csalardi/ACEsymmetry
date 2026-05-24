@@ -187,7 +187,7 @@ def overall_conversion_from_smiles(smiles:str, num_confs:int=1000, filename_1:st
                     filename_2=f"{molecule_name}.xyz"
                 with open(filename_2, "w") as f:
                     f.write(xyz_block)    
-                return ("Files succesfully generated", filename_1, filename_2)
+                return filename_1, filename_2
         else:
             raise ValueError("Unsupported type of compound: impossibility of the script to deal with coordination complexes due to heavy electronic computations.")
 
