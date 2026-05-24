@@ -1,8 +1,5 @@
 import streamlit as st
-import streamlit_ketcher as stk
-import pubchempy as pc
-import time
-from acesymmetry import Visual_Display, Format_Conversion
+from pathlib import Path
 
 
 st.set_page_config(
@@ -10,7 +7,7 @@ st.set_page_config(
     page_icon="",
     layout="wide",
     initial_sidebar_state="collapsed",)
-st.logo("assets/epfl-logo.svg", size="large" , link="https://www.epfl.ch/en/", icon_image=None,)
+st.logo(Path(__file__).parent/"assets/epfl-logo.svg", size="large" , link="https://www.epfl.ch/en/", icon_image=None,)
     
 st.title("Welcome to our ACEsymmetry app !")
 st.write("This app is an interactive application developed at EPFL for the Practical programming in Chemistry Course. ")

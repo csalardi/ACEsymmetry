@@ -2,7 +2,7 @@ import streamlit as st
 import streamlit_ketcher as stk
 import pubchempy as pc
 import pointgroup as pg
-
+from pathlib import Path
 from acesymmetry import Visual_Display as vd, Format_Conversion as conv
 
 st.set_page_config(
@@ -10,7 +10,7 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="collapsed"
 )
-st.logo("assets/epfl-logo.svg", size="large" , link="https://www.epfl.ch/en/", icon_image=None,)
+st.logo(Path(__file__).parent/"assets/epfl-logo.svg", size="large" , link="https://www.epfl.ch/en/", icon_image=None,)
 st.title(" Welcome to ACEsymmetry app")
 def previous_page():
     if st.button("← Previous"):
@@ -54,21 +54,19 @@ def Molecule_notation_page():
                         st.error("Sorry, your molecule is unknown. Please check if your molecule is spelled correctly. ")  
     elif SMILES_or_IUPAC == "Draw the molecule":
         with col12:
-            molecule_name = stk.st_ketcher()
+            molecule_name = stk.st_ketcher() #SMILES
             if molecule_name:
                 try:
                     molecule_info = pc.get_compounds(molecule_name, "smiles")[0]
                     IUPAC_molecule_name = molecule_info.iupac_name
-
                     molecule_name1 = conv.smiles_from_name(IUPAC_molecule_name)
                     st.session_state.molecule_name = molecule_name1
                     with st.form("Drawing", enter_to_submit=True):
                         st.write("The molecule you drew corresponds to", IUPAC_molecule_name,".")
-                        
                         submitted = st.form_submit_button("Next")
-                        next_page(submitted, st.session_state.molecule_name)
                 except:
                     st.error("The molecule you draw is not valid ! Sorry", icon= "🚨")
+        next_page(submitted, st.session_state.molecule_name)
     previous_page()
 
 def nb_conformer_choice_page():
@@ -97,7 +95,7 @@ def name_files_page():
         col22.write("Special characters and space are not allowed except underscores (_) and hyphens (-).")
         name_xyz_files = col22.text_input("Enter the name of your xyz file.")
         name_SDF_file = col22.text_input("Enter the name of your SDF file.")
-        st.session_state.name_xyz_files = name_files_page + ".xyz" 
+        st.session_state.name_xyz_files = name_xyz_files + ".xyz" 
         st.session_state.name_SDF_files = name_SDF_file + ".SDF"
         submitted = st.button("Next →")
     else : 

@@ -5,14 +5,14 @@ import streamlit as st
 import streamlit_ketcher as stk
 import pubchempy as pc
 import pointgroup as pg
-
+from pathlib import Path
 st.set_page_config(
     page_title="ACEsymmetry App",
     page_icon="",
     layout="wide",
     initial_sidebar_state="collapsed"
 )
-st.logo("assets/epfl-logo.svg", size="large" , link="https://www.epfl.ch/en/", icon_image=None,)
+st.logo(Path(__file__).parent/"assets/epfl-logo.svg", size="large" , link="https://www.epfl.ch/en/", icon_image=None,)
 st.title(" ACEsymmetry app")
 st.subheader("Learning mode")
 if "current" not in st.session_state:
@@ -31,7 +31,7 @@ def flowchart_page():
     with col11: 
         st.write("A molecule point group can be determined by folling this flowchart :")
         st.write("This learning mode follows the steps in the flowchart and checks your answer after each question until you find the correct group point. ")
-    col12.image("assets/Flowchart.png")
+    col12.image(Path(__file__).parent/"assets/Flowchart.png")
     if col23.button("Next →"):
         next_page(True, True)
     if col21.button("← Previous"):
@@ -87,8 +87,10 @@ def name_files_page():
     st.session_state.name_SDF_files = "default"
     if Y_or_No_name_files == "Rename the files": 
         col22.write("Special characters and space are not allowed except underscores (_) and hyphens (-).")
-        st.session_state.name_xyz_files = col22.text_input("Enter the name of your xyz file.")
-        st.session_state.name_SDF_files = col22.text_input("Enter the name of your SDF file.")
+        name_xyz_files = col22.text_input("Enter the name of your xyz file.")
+        name_SDF_file = col22.text_input("Enter the name of your SDF file.")
+        st.session_state.name_xyz_files = name_xyz_files + ".xyz" 
+        st.session_state.name_SDF_files = name_SDF_file + ".SDF"
         submitted = st.button("Next →")
     else : 
         submitted = st.button("Next →")
