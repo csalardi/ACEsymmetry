@@ -2,8 +2,8 @@ from acesymmetry import Symmetry_Elements_Dico
 from acesymmetry.Visual_Display import get_symmetry_set
 from typing import Union
 
-symmetry_set:set[str]=get_symmetry_set(point_group)
-symmetry_list:list[str]=list(symmetry_set)
+#symmetry_set:set[str]=get_symmetry_set(point_group)
+#symmetry_list:list[str]=list(symmetry_set)
 
 def normalize_label(label: str) -> str:
     '''
