@@ -202,26 +202,22 @@ def check_icosahedral_symmetry(point_group:str)->str:
     else:
         return "no"
 
-def check_C2_multiplicity(symmetry_list: list[str], n: int) -> str:
+def check_C2_multiplicity(point_group:str) -> str:
     '''
-    Checks the presence of n C2 axes (including possible multiplicities from CSV).
+    Checks the presence of n C2 axes for molecules with Cn axes. It corresponds to Dn, Dnh and Dnd.
+    Therefore, this function is equivalent to verify is the pointgroup of the 
+    studied molecule belongs to one of the three mentioned pointgoups
 
-    :param symmetry_list: list of symmetry elements
-    :param n: expected number of C2 axes
-    :return: "yes" if condition is satisfied, "no" otherwise
+    :param pointgroup
+    :type str
+
+    :return "yes" (str) if the molecule is Dn, Dnhn Dnd
+    :return "no" (str) if not
     '''
-
-    counter = 0
-
-    for element in symmetry_list:
-        mult, label = parse_symmetry_element(element)
-        if label == "C2":
-            counter += mult
-
-    if counter == n:
+    if point_group.startswith("D") == True:
         return "yes"
-
-    return "no"
+    else
+        return "no"
 
 def check_dihedral_plane_multiplicity(symmetry_list:list[str], n:int)->str:
     '''
