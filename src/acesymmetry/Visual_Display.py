@@ -51,6 +51,23 @@ def read_xyz_file(xyz_file_name:str):
     return (Elements,Coordinates)
 
 
+def get_labels(xyz_file_name:str)->set:
+    '''
+    Gets the set of symmetry elements' labels from the xyz file of the molecule.
+
+    :param xyz_file_name: Name of the xyz file of the molecule
+    :type xyz_file_name: str
+
+    :return Labels (set): the set containing the symmetry elements labels.
+    '''
+    Symbols:list=read_xyz_file(xyz_file_name)[0]
+    Positions=read_xyz_file(xyz_file_name)[1]
+    Point_group:str=pg.PointGroup(symbols=Symbols, positions=Positions).get_point_group()
+    Labels:set=get_symmetry_set(Point_group)
+
+    return Labels
+
+
 def get_barycentre(xyz_file_name:str)->list:
     '''
     Find the coordinates of the center of mass of the molecule.
@@ -92,7 +109,7 @@ def get_inversion_centre(xyz_file_name:str):
         return None
     
 
-def display(xyz_file_name:str, image:str="default"):
+def display(xyz_file_name:str, image:str="default")->str:
     '''
     Create the visual representation of the molecule. Function only working for the conversion .xyz to .png.
 
@@ -100,12 +117,16 @@ def display(xyz_file_name:str, image:str="default"):
     :type sdf_file_name: str
     :param image: the name and extension of the output file, by default .png named the same as the sdf_file.
     :type image: str
+
+    :return image (str): Name of the generated image.
     '''
     if image=="default":
         image=xyz_file_name[:-3]+"png"
     xyz_file:Path=Path.cwd()/xyz_file_name
     molecule=xyzrender.load(xyz_file)
     xyzrender.render(molecule, output=image, hy=True, config="Pmol", idx="s")
+
+    return image
 
 
 def display_with_mass_centre(xyz_file_name:str, image:str="default"):

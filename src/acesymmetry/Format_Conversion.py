@@ -167,7 +167,7 @@ def overall_conversion_from_smiles(smiles:str, num_confs:int=1000, filename_1:st
     :param filename_2: Name of the xyz file to generate, where the defaut setting corresponds to the iupac name of the molecule.
     :type filename_2: str 
     
-    :return ("Files succesfully generated", filename_1, filename_2) (tuple): to indicate the succesful generation of SDF and xyz files with a reminder of the filenames.
+    :return (filename_1, filename_2) (tuple): to indicate the succesful generation of SDF and xyz files with a reminder of the filenames.
     '''
     mol:Union[Mol, None]=mol_from_smiles(smiles)
     molecule_name:Union[str, None]=name_from_mol(mol)

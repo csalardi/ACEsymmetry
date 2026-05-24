@@ -12,12 +12,15 @@ st.set_page_config(
     initial_sidebar_state="collapsed",)
 st.logo("assets/epfl-logo.svg", size="large" , link="https://www.epfl.ch/en/", icon_image=None,)
     
-st.title("Welcome in our ACEsymmetry app")
-st.write("This app is an interactive application developed at EPFL for the Practical programming in Chemistry. etc. ")
-st.text("This app allows users to: - analyse molecular symmetry")
+st.title("Welcome to our ACEsymmetry app !")
+st.write("This app is an interactive application developed at EPFL for the Practical programming in Chemistry Course. ")
+st.write("This app allows the user to: ")
+st.write("- find the point group of a molecule and the corresponding symmetry elements via the Point Group option.")
+st.write("- to practice finding the group point of a molecule by following a flowchart via the Learning mode option.")
+st.write("This app does not work with molecule containing metals !!!")
 col1, col2, col3 = st.columns([1,5,2])
-col3.markdown("-- ACESymmetry")
-if col3.button("Group Point"):
+col3.markdown("-- The ACESymmetry Team")
+if col3.button("Point Group"):
     st.session_state.current = 0
     st.switch_page("pages/page1.py")
 elif col3.button("Learning mode"):

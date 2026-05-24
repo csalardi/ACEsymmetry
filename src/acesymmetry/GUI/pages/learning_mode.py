@@ -18,7 +18,7 @@ st.subheader("Learning mode")
 if "current" not in st.session_state:
     st.session_state.current = 0
 def previous_page():
-    if st.button("← Previous", disabled=st.session_state.current == 0):
+    if st.button("← Previous"):
         st.session_state.current -= 1
         st.rerun()
 def next_page(submitted, condition=True):
@@ -69,6 +69,8 @@ def Molecule_notation_page():
                 try:
                     molecule_info = pc.get_compounds(molecule_name, "smiles")[0]
                     IUPAC_molecule_name = molecule_info.iupac_name
+                    molecule_name1 = conv.smiles_from_name(IUPAC_molecule_name)
+                    st.session_state.molecule_name = molecule_name1
                     with st.form("Drawing", enter_to_submit=True):
                         st.write("The molecule you drew corresponds to", IUPAC_molecule_name,".")
                         submitted = st.form_submit_button("Next")
@@ -178,7 +180,7 @@ def check_main_axis_multiplicity(point_group:str)->str:
     else:
         return "No"
 
-def check_rotation_axis(symmetry_list:list[str])->tuple[str, int]:
+def check_rotation_axis(symmetry_set:set[str]) -> str:
     '''
     Checks the presence of rotation axis in the molecule
 
@@ -190,7 +192,7 @@ def check_rotation_axis(symmetry_list:list[str])->tuple[str, int]:
     '''
     n_max = 0
 
-    for element in symmetry_list:
+    for element in symmetry_set:
         _, label = parse_symmetry_element(element)
 
         if label.startswith("C"):
@@ -202,7 +204,7 @@ def check_rotation_axis(symmetry_list:list[str])->tuple[str, int]:
                 pass
 
     if n_max > 0:
-        return ("Yes", n_max)
+        return "Yes"
     else:
         return "No"
     
@@ -248,22 +250,17 @@ def check_dihedral_plane(symmetry_set:set[str])->str:
     else:
         return "No"
 
-def check_improper_rotation_axis(symmetry_list:list[str], n:int)->str:
+def check_improper_rotation_axis(group_point)->str:
     '''
     Checks the presence of improper rotation axes with order 2n_ref for molecules with Cn axis
-    :param symmetry_set
-    :type set of strings
-    :param n 
-    :type int
 
     :return "Yes" (str) if the molecule has improper rotation axes with order 2n_ref
     :return "No" (str) if not
     '''
-    for element in symmetry_list:
-        if element.startswith("S") == True:
-            if int(element[1:]) == 2*n_ref:
-                return "Yes"
-    return "No"
+    if group_point.startswith("S"):
+        return "Yes"
+    else: 
+        return "No"
 
 def check_icosahedral_symmetry(point_group:str)->str:
     '''
@@ -278,72 +275,44 @@ def check_icosahedral_symmetry(point_group:str)->str:
         return "Yes"
     else:
         return "No"
-def check_C2_multiplicity(symmetry_list: list[str], n: int) -> str:
+def check_C2_multiplicity(point_group) -> str:
     '''
-    Checks the presence of n C2 axes (including possible multiplicities from CSV).
-
-    :param symmetry_list: list of symmetry elements
-    :param n: expected number of C2 axes
+    Checks the presence of n C2 axes 
     :return: "Yes" if condition is satisfied, "no" otherwise
     '''
+    if point_group.startswith("D"):
+        if point_group.endswith("h"):
+            return "Yes"
+        elif point_group.endswith("d"):
+            return "Yes"
+        else:
+            return "No"
+    else: 
+        return "No"
 
-    counter = 0
-
-    for element in symmetry_list:
-        mult, label = parse_symmetry_element(element)
-        if label == "C2":
-            counter += mult
-
-    if counter == n:
-        return "Yes"
-
-    return "No"
-
-def check_dihedral_plane_multiplicity(symmetry_list:list[str], n:int)->str:
-    '''
-    Checks the  presence of n dihedral planes for molecules with Cn axis
-    :param point_group
-    :type str
-    :param n
-    :type int
-
-    :return "Yes" (str) if the molecule has n dihedral planes
-    :return "No" (str) if not
-    '''
-    counter = 0
-
-    for element in symmetry_list:
-        mult, label = parse_symmetry_element(element)
-
-        if label == "Sigma_d":
-            counter += mult
-
-    if counter == n:
-        return "Yes"
-    return "No"
-
-def check_vertical_plane_multiplicity(symmetry_list:list[str], n:int)->str:
+    
+def check_vertical_plane_multiplicity(point_group)->str:
     '''
     Checks the  presence of n vertical planes for molecules with Cn axis
     :param point_group
-    :type str
-    :param n
-    :type int
+
 
     :return "Yes" (str) if the molecule has n vertical planes
     :return "No" (str) if not
     '''
-    counter = 0
+    if point_group.startswith("D"):
+        if point_group.endswith("d"):
+            return "Yes"
+        else : 
+            return "No"
+    elif point_group.startswith("C"):
+        if point_group.endswith("v"):
+            return "Yes"
+        else: 
+            return "No"
+    else: 
+        "No"
 
-    for element in symmetry_list:
-        mult, label = parse_symmetry_element(element)
-
-        if label == "Sigma_v":
-            counter += mult
-
-    if counter == n:
-        return "Yes"
-    return "No"
 def Questions_page() : 
     c = "Correct !"
     i = "Incorrect !"
@@ -357,6 +326,8 @@ def Questions_page() :
             Positions=vd.read_xyz_file(xyz_file_name)[1]
             point_group=pg.PointGroup(symbols=Symbols, positions=Positions).get_point_group()
             Symmetry_Elements=vd.get_symmetry_set(point_group)
+            image = vd.display(xyz_file_name)
+            st.image(image)
             response = st.radio("Is your molecule linear ?", ("Yes", "No"), index=None, horizontal= True)
             if response: 
                 if response == check_linearity(point_group):
@@ -366,7 +337,7 @@ def Questions_page() :
                 if check_linearity(point_group) == "Yes" : 
                     response = st.radio("Does your molecule have an inversion centre ?", ("Yes", "No"), index=None, horizontal= True)
                     if response : 
-                        if response == check_inversion_centre(point_group):
+                        if response == check_inversion_centre(Symmetry_Elements):
                             st.write(c)
                             st.write("The point group of your molecule is", point_group,"and the corresponding symmetry set is :", Symmetry_Elements,"." )
                         else: 
@@ -382,13 +353,13 @@ def Questions_page() :
                         if check_main_axis_multiplicity(point_group) == "Yes": 
                             response = st.radio("Does your molecule have an inversion centre ?", ("Yes", "No"), index=None, horizontal=True)
                             if response : 
-                                if response == check_inversion_centre(point_group):
+                                if response == check_inversion_centre(Symmetry_Elements):
                                     st.write(c)   
                                 else : 
                                     st.write(i) 
-                                if check_inversion_centre(point_group) == "No":
+                                if check_inversion_centre(Symmetry_Elements) == "No":
                                     st.write("The point group of your molecule is", point_group,"and the corresponding symmetry set is :", Symmetry_Elements,"." )
-                                elif check_inversion_centre(point_group) == "Yes":
+                                elif check_inversion_centre(Symmetry_Elements) == "Yes":
                                     response = st.radio("Does your molecule have a 5-fold proper rotation axis, (C5) ?", ("Yes", "No"), index=None, horizontal=True)
                                     if  response : 
                                         if response == check_icosahedral_symmetry(point_group) :
@@ -400,29 +371,29 @@ def Questions_page() :
                         if check_main_axis_multiplicity(point_group) == "No": 
                             response = st.radio("Does your molecule have an n-fold rotation axis, (Cn) ?", ("Yes", "No"), index=None, horizontal=True)
                             if response : 
-                                if response == check_rotation_axis(point_group): 
+                                if response == check_rotation_axis(Symmetry_Elements): 
                                     st.write(c)
                                 else : 
                                     st.write(i)
-                                if check_rotation_axis(point_group) == "No": 
+                                if check_rotation_axis(Symmetry_Elements) == "No": 
                                     response = st.radio("Does your molecule have a horizontal plane (sigma_h) ?", ("Yes", "No"), index=None, horizontal=True)
                                     if response: 
-                                        if response == check_horizontal_plane(point_group):
+                                        if response == check_horizontal_plane(Symmetry_Elements):
                                             st.write(c)
                                         else:
                                             st.write(i)
-                                        if check_horizontal_plane(point_group) == "Yes":
+                                        if check_horizontal_plane(Symmetry_Elements) == "Yes":
                                             st.write("The point group of your molecule is", point_group,"and the corresponding symmetry set is :", Symmetry_Elements,"." )
-                                        elif check_horizontal_plane(point_group) == "No":
+                                        elif check_horizontal_plane(Symmetry_Elements) == "No":
                                             response = st.radio("Does your molecule have an inversion centre ?", ("Yes", "No"), index=None, horizontal=True)
                                             if response : 
-                                                if response == check_inversion_centre(point_group):
+                                                if response == check_inversion_centre(Symmetry_Elements):
                                                     st.write(c)
                                                     st.write("The point group of your molecule is", point_group,"and the corresponding symmetry set is :", Symmetry_Elements,"." )
                                                 else : 
                                                     st.write(i)
                                                     st.write("The point group of your molecule is", point_group,"and the corresponding symmetry set is :", Symmetry_Elements,"." )
-                                elif check_rotation_axis(point_group) == "Yes":
+                                elif check_rotation_axis(Symmetry_Elements) == "Yes":
                                     response = st.radio("Does the Cn axis of your molecule have n perpendicular C2 axis ?",("Yes", "No"), index=None, horizontal=True)
                                     if response : 
                                         if response == check_C2_multiplicity(point_group): 
@@ -432,16 +403,16 @@ def Questions_page() :
                                         if check_C2_multiplicity(point_group) == "Yes":
                                             response = st.radio("Does your molecule have a horizontal plane (sigma_h) ?",("Yes", "No"), index=None, horizontal=True)
                                             if response : 
-                                                if response == check_horizontal_plane(point_group) : 
+                                                if response == check_horizontal_plane(Symmetry_Elements) : 
                                                     st.write(c)
                                                 else : 
                                                     st.write(i)
-                                                if check_horizontal_plane(point_group) == "Yes":
+                                                if check_horizontal_plane(Symmetry_Elements) == "Yes":
                                                    st.write("The point group of your molecule is", point_group,"and the corresponding symmetry set is :", Symmetry_Elements,"." )
-                                                if check_horizontal_plane(point_group) == "No" :
+                                                if check_horizontal_plane(Symmetry_Elements) == "No" :
                                                     response = st.radio("Does your molecule have a principal n-fold rotation axis (Cn) with n vertical mirror planes (n sigma_v) ?",("Yes", "No"), index=None, horizontal=True)
                                                     if response : 
-                                                        if response == check_vertical_plane_multiplicity : 
+                                                        if response == check_vertical_plane_multiplicity(point_group) : 
                                                             st.write(c)
                                                             st.write("The point group of your molecule is", point_group,"and the corresponding symmetry set is :", Symmetry_Elements,"." )
                                                         else : 
@@ -450,13 +421,13 @@ def Questions_page() :
                                         elif check_C2_multiplicity(point_group) == "No":
                                             response = st.radio("Does your molecule have a horizontal plane (sigma_h) ?",("Yes", "No"), index=None, horizontal=True)
                                             if response : 
-                                                if response == check_horizontal_plane(point_group) : 
+                                                if response == check_horizontal_plane(Symmetry_Elements) : 
                                                     st.write(c)
                                                 else : 
                                                     st.write(i)
-                                                if check_horizontal_plane(point_group) == "Yes":
+                                                if check_horizontal_plane(Symmetry_Elements) == "Yes":
                                                     st.write("The point group of your molecule is", point_group,"and the corresponding symmetry set is :", Symmetry_Elements,"." )
-                                                elif check_horizontal_plane(point_group) == "No":
+                                                elif check_horizontal_plane(Symmetry_Elements) == "No":
                                                     response = st.radio("Does your molecule have a principal n-fold rotation axis (Cn) with n vertical mirror planes (n sigma_v) ?",("Yes", "No"), index=None, horizontal=True)
                                                     if response : 
                                                         if response == check_vertical_plane_multiplicity(point_group) : 
@@ -475,10 +446,6 @@ def Questions_page() :
                                                                 else : 
                                                                     st.write(i)
                                                                     st.write("The point group of your molecule is", point_group,"and the corresponding symmetry set is :", Symmetry_Elements,"." )                                    
-            st.write("The point group of your molecule is", point_group,"and the corresponding symmetry set is :", Symmetry_Elements,"." )
-            with st.container(border=True):
-                for label in Symmetry_Elements : 
-                    st.write(label)
         except: 
             st.error("Your molecule is invalid or contains metals", icon="🚨")
     previous_page()       
