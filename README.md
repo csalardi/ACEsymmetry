@@ -69,7 +69,6 @@ The following dependencies are essential for the functionning of the acesymmetry
 [**streamlit_ketcher**](https://github.com/streamlit/streamlit-ketcher)  
 [**pointgroup**](https://github.com/abelcarreras/pointgroup)  
 [**numpy**](https://numpy.org/)  
-[**matplotlib**](https://matplotlib.org/)  
 [**pubchempy**](https://docs.pubchempy.org/en/latest/)  
 [**xyzrender**](https://github.com/aligfellow/xyzrender)
 

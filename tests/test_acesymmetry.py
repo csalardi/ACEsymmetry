@@ -1,7 +1,7 @@
 from acesymmetry import Format_Conversion as conv, Visual_Display as vd
 import pointgroup as pg
 
-def whole_script_testing(name):
+def whole_script_testing(name:str):
     conv.overall_conversion_from_name(name)
     Symbols=vd.read_xyz_file(f"{name}.xyz")[0]
     Positions=vd.read_xyz_file(f"{name}.xyz")[1]
