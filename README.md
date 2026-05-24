@@ -1,4 +1,4 @@
-![Project Logo](assets/Logo.png)
+![Project Logo](assets/Logo_ACEsymmetry.png)
 
 ![Coverage Status](assets/coverage-badge.svg)
 [![License](https://img.shields.io/github/license/csalardi/ACEsymmetry)](https://github.com/csalardi/ACEsymmetry/blob/main/LICENSE)
