@@ -92,7 +92,7 @@ def get_inversion_centre(xyz_file_name:str):
         return None
     
 
-def display(xyz_file_name:str, image:str="default"):
+def display(xyz_file_name:str, image:str="default")->str:
     '''
     Create the visual representation of the molecule. Function only working for the conversion .xyz to .png.
 
@@ -100,12 +100,15 @@ def display(xyz_file_name:str, image:str="default"):
     :type sdf_file_name: str
     :param image: the name and extension of the output file, by default .png named the same as the sdf_file.
     :type image: str
+
+    :return image (str): Name of the generated image.
     '''
     if image=="default":
         image=xyz_file_name[:-3]+"png"
     xyz_file:Path=Path.cwd()/xyz_file_name
     molecule=xyzrender.load(xyz_file)
     xyzrender.render(molecule, output=image, hy=True, config="Pmol", idx="s")
+    return image
 
 
 def display_with_mass_centre(xyz_file_name:str, image:str="default"):

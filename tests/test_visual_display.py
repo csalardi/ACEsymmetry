@@ -28,7 +28,7 @@ print(f"The center of inversion has for coordinates: \n {vd.get_inversion_centre
 print(f"The center of inversion has for coordinates: \n {vd.get_inversion_centre('Cs.xyz')}")
 print(f"The center of inversion has for coordinates: \n {vd.get_inversion_centre('Dinfh.xyz')}")
 
-vd.display("methane.xyz")
-vd.display("benzene.xyz")
+print(vd.display("methane.xyz"))
+print(vd.display("benzene.xyz"))
 
 #vd.display_with_mass_centre("methane.xyz") #Functionality currently not working
