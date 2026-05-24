@@ -12,7 +12,7 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="collapsed"
 )
-st.logo(Path(__file__).parent/"assets/epfl-logo.svg", size="large" , link="https://www.epfl.ch/en/", icon_image=None,)
+st.logo(Path(__file__).parent.parent/"assets/epfl-logo.svg", size="large" , link="https://www.epfl.ch/en/", icon_image=None,)
 st.title(" ACEsymmetry app")
 st.subheader("Learning mode")
 if "current" not in st.session_state:
@@ -31,7 +31,7 @@ def flowchart_page():
     with col11: 
         st.write("A molecule point group can be determined by folling this flowchart :")
         st.write("This learning mode follows the steps in the flowchart and checks your answer after each question until you find the correct group point. ")
-    col12.image(Path(__file__).parent/"assets/Flowchart.png")
+    col12.image(Path(__file__).parent.parent/"assets/Flowchart.png")
     if col23.button("Next →"):
         next_page(True, True)
     if col21.button("← Previous"):
