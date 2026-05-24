@@ -19,7 +19,7 @@ col1, col2, col3 = st.columns([1,5,2])
 col3.markdown("-- The ACESymmetry Team")
 if col3.button("Point Group"):
     st.session_state.current = 0
-    st.switch_page("pages/page1.py")
-elif col3.button("Learning mode"):
+    st.switch_page("pages/Point_Group.py")
+elif col3.button("Learning Mode"):
     st.session_state.current = 0
-    st.switch_page("pages/learning_mode.py")
+    st.switch_page("pages/Learning_Mode.py")

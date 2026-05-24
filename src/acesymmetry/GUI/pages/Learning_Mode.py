@@ -82,16 +82,18 @@ def Molecule_notation_page():
 def name_files_page():
     col21, col22 = st.columns([5, 5])
     col21.write("Two 3D structure files will be generated and saved on your computer.")
-    Y_or_No_name_files = col21.radio("Would you like to rename them or keep the default names ?", ("Rename the files", "Keep the default names"), help= "The default name of your files are IUPAC.xyz and IUPAC.SDF.")
+    Y_or_No_name_files = col21.radio("Would you like to rename them or keep the default names ?", ("Rename the files", "Keep the default names"), index=None, help= "The default name of your files are IUPAC.xyz and IUPAC.SDF.")
     st.session_state.name_xyz_files = "default"
     st.session_state.name_SDF_files = "default"
     if Y_or_No_name_files == "Rename the files": 
-        col22.write("Special characters and space are not allowed except underscores (_) and hyphens (-).")
-        name_xyz_files = col22.text_input("Enter the name of your xyz file.")
-        name_SDF_file = col22.text_input("Enter the name of your SDF file.")
-        st.session_state.name_xyz_files = name_xyz_files + ".xyz" 
-        st.session_state.name_SDF_files = name_SDF_file + ".SDF"
-        submitted = st.button("Next →")
+        with col22:
+            with st.form("files_name", enter_to_submit=True):
+                st.write("Special characters and space are not allowed except underscores (_) and hyphens (-).")
+                name_xyz_files = st.text_input("Enter the name of your xyz file.")
+                name_SDF_file = st.text_input("Enter the name of your SDF file.")
+                st.session_state.name_xyz_files = name_xyz_files + ".xyz" 
+                st.session_state.name_SDF_files = name_SDF_file + ".SDF"
+                submitted = st.form_submit_button("Next →")
     else : 
         submitted = st.button("Next →")
     previous_page()
